@@ -8,9 +8,20 @@
 
 <body>
     <div class="header">
-        <div id="restartButton" onmouseover="on_mouseover(this)"
-                                onclick="setUpGame()"
-                                onmouseout="on_mouseout(this)">
+        <div class="home">
+            <img class="planeswalk-icon" src="assets/planeswalk.svg">
+            <img class="chaos-icon" src="assets/chaos.svg">
+        </div>
+
+        <div class="title">
+            PLANECHASE
+        </div>
+
+        <div class="restartButtonTemp"></div>
+
+        <div class="restartButton" onmouseover="on_mouseover(this)"
+                                   onclick="restartGame()"
+                                   onmouseout="on_mouseout(this)">
             <div>
                 Restart 
             </div>
@@ -21,67 +32,101 @@
         <!-- Row 1 -->
         <div class="row">
             <div id="cell00" class="cell" onmouseover="on_mouseover(this)"
-                                         onclick="focusPlane([0, 0])"
-                                         onmouseout="on_mouseout(this)">
-                <img src="">
+                                          onclick="focusPlane([0, 0])"
+                                          onmouseout="on_mouseout(this)">
+                <img>
             </div>
             <div id="cell01" class="cell" onmouseover="on_mouseover(this)"
-                                         onclick="focusPlane([0, 1])"
-                                         onmouseout="on_mouseout(this)">
-                <img src="">
+                                          onclick="focusPlane([0, 1])"
+                                          onmouseout="on_mouseout(this)">
+                <img>
             </div>
             <div id="cell02" class="cell" onmouseover="on_mouseover(this)"
-                                         onclick="focusPlane([0, 2])"
-                                         onmouseout="on_mouseout(this)">     
-                <img src="">
+                                          onclick="focusPlane([0, 2])"
+                                          onmouseout="on_mouseout(this)">     
+                <img>
             </div>
         </div>
 
         <!-- Row 2 -->
         <div class="row">
             <div id="cell10" class="cell" onmouseover="on_mouseover(this)"
-                                         onclick="focusPlane([1, 0])"
-                                         onmouseout="on_mouseout(this)">
-                <img src="">
+                                          onclick="focusPlane([1, 0])"
+                                          onmouseout="on_mouseout(this)">
+                <img>
             </div>
             <div id="cell11" class="cell" onmouseover="on_mouseover(this)"
-                                         onclick="focusPlane([1, 1])"
-                                         onmouseout="on_mouseout(this)">
-                <img src="">
+                                          onclick="focusPlane([1, 1])"
+                                          onmouseout="on_mouseout(this)">
+                <img>
             </div>
             <div id="cell12" class="cell" onmouseover="on_mouseover(this)"
-                                         onclick="focusPlane([1, 2])"
-                                         onmouseout="on_mouseout(this)">
-                <img src="">
+                                          onclick="focusPlane([1, 2])"
+                                          onmouseout="on_mouseout(this)">
+                <img>
             </div>
         </div>
 
         <!-- Row 3 -->
         <div class="row">
             <div id="cell20" class="cell" onmouseover="on_mouseover(this)"
-                                         onclick="focusPlane([2, 0])"
-                                         onmouseout="on_mouseout(this)">
-                <img src="">
+                                          onclick="focusPlane([2, 0])"
+                                          onmouseout="on_mouseout(this)">
+                <img>
             </div>
             <div id="cell21" class="cell" onmouseover="on_mouseover(this)"
-                                         onclick="focusPlane([2, 1])"
-                                         onmouseout="on_mouseout(this)">
-                <img src="">
+                                          onclick="focusPlane([2, 1])"
+                                          onmouseout="on_mouseout(this)">
+                <img>
             </div>
             <div id="cell22" class="cell" onmouseover="on_mouseover(this)"
-                                         onclick="focusPlane([2, 2])"
-                                         onmouseout="on_mouseout(this)">
-                <img src="">
+                                          onclick="focusPlane([2, 2])"
+                                          onmouseout="on_mouseout(this)">
+                <img>
             </div>
         </div>
     </div>
 
+
+    <!-- Focus Plane, Planeswalk button, custom buttons -->
     <div class="focusPlaneBackground" onclick="removeFocusPlane()"></div>
 
     <div class="focusPlane">
         <img src="">
     </div>
 
+    <div class="planeswalkButton" onmouseover="on_mouseover(this)"
+                                  onclick="moveToPlane()"
+                                  onmouseout="on_mouseout(this)">
+        <div>
+            PLANESWALK 
+        </div>
+    </div>
+
+
+    <!-- Start -->
+    <div class="startBackground"></div>
+
+    <div class="startButton" onmouseover="on_mouseover(this)"
+                             onclick="setUpGame()"
+                             onmouseout="on_mouseout(this)">
+        <div>
+            START
+        </div> 
+    </div>
+
+    <!-- Loading gif -->
+    <div class="loading-gif">
+        <img src="assets/loading.gif">
+    </div>
+
+    <!-- Setup - player names -->
+    <!-- <div class="playerNamesContainer">
+        <div class=""
+
+
+    </div>
+    <div class="submitPlayerNamesButton"></div> -->
 
 
 
