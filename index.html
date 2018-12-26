@@ -7,27 +7,131 @@
 
 
 <body>
+    <!-- Header during gameplay -->
     <div class="header">
-        <div class="home">
-            <img class="planeswalk-icon" src="assets/planeswalk.svg">
-            <img class="chaos-icon" src="assets/chaos.svg">
+
+        <!-- Logo during menu -->
+        <div class="title menu-title">
+            <img src="assets/header/logo.svg">
         </div>
 
-        <div class="title">
-            PLANECHASE
+        <!-- Logo during gameplay -->
+        <div class="title game">
+            <img src="assets/header/logo.svg">
         </div>
 
-        <div class="restartButtonTemp"></div>
-
-        <div class="restartButton" onmouseover="on_mouseover(this)"
-                                   onclick="restartGame()"
-                                   onmouseout="on_mouseout(this)">
-            <div>
-                Restart 
+        <!-- Planar die -->
+        <div class="die-container game">
+            <div class="rollButton" onmouseover="on_mouseover(this)"
+                                    onclick="rollDie()"
+                                    onmouseout="on_mouseout(this)">
+                <img src="assets/header/rollButton.svg">
             </div>
+
+            <div class="die">
+                <img src="assets/header/die.svg">
+            </div>
+        </div>
+
+        <!-- Life totals -->
+        <div class="lifetotal-container game">
+
+            <!-- Player 1 -->
+            <div id="player1Life" class="playerlife-container">
+                <div class="minus" onmouseover="on_mouseover(this)"
+                                   onclick="updateLifeTotal(-1)"
+                                   onmouseout="on_mouseout(this)">
+                    <img src="assets/header/minus.svg">
+                </div>
+                <div class="playerName">
+                    IJ: 20
+                </div>
+                <div class="plus" onmouseover="on_mouseover(this)"
+                                  onclick="updateLifeTotal(1)"
+                                  onmouseout="on_mouseout(this)">
+                    <img src="assets/header/plus.svg">
+                </div>
+            </div>
+
+            <!-- Player 2 -->
+            <div id="player2Life" class="playerlife-container">
+                <div class="minus" onmouseover="on_mouseover(this)"
+                                   onclick="updateLifeTotal(-1)"
+                                   onmouseout="on_mouseout(this)">
+                    <img src="assets/header/minus.svg">
+                </div>
+                <div class="playerName">
+                    IJ: 20
+                </div>
+                <div class="plus" onmouseover="on_mouseover(this)"
+                                  onclick="updateLifeTotal(1)"
+                                  onmouseout="on_mouseout(this)">
+                    <img src="assets/header/plus.svg">
+                </div>
+            </div>
+
+            <!-- Player 3 -->
+            <div id="player3Life" class="playerlife-container">
+                <div class="minus" onmouseover="on_mouseover(this)"
+                                   onclick="updateLifeTotal(-1)"
+                                   onmouseout="on_mouseout(this)">
+                    <img src="assets/header/minus.svg">
+                </div>
+                <div class="playerName">
+                    IJ: 20
+                </div>
+                <div class="plus" onmouseover="on_mouseover(this)"
+                                  onclick="updateLifeTotal(1)"
+                                  onmouseout="on_mouseout(this)">
+                    <img src="assets/header/plus.svg">
+                </div>
+            </div>
+
+            <!-- Player 4 -->
+            <div id="player4Life" class="playerlife-container">
+                <div class="minus" onmouseover="on_mouseover(this)"
+                                   onclick="updateLifeTotal(-1)"
+                                   onmouseout="on_mouseout(this)">
+                    <img src="assets/header/minus.svg">
+                </div>
+                <div class="playerName">
+                    IJ: 20
+                </div>
+                <div class="plus" onmouseover="on_mouseover(this)"
+                                  onclick="updateLifeTotal(1)"
+                                  onmouseout="on_mouseout(this)">
+                    <img src="assets/header/plus.svg">
+                </div>
+            </div>
+
+            <!-- Player 5 -->
+            <div id="player5Life" class="playerlife-container">
+                <div class="minus" onmouseover="on_mouseover(this)"
+                                   onclick="updateLifeTotal(-1)"
+                                   onmouseout="on_mouseout(this)">
+                    <img src="assets/header/minus.svg">
+                </div>
+                <div class="playerName">
+                    IJ: 20
+                </div>
+                <div class="plus" onmouseover="on_mouseover(this)"
+                                  onclick="updateLifeTotal(1)"
+                                  onmouseout="on_mouseout(this)">
+                    <img src="assets/header/plus.svg">
+                </div>
+            </div>
+        </div>
+
+        <!-- Restart button -->
+        <div class="restartButton game" onmouseover="on_mouseover(this)"
+                                        onclick="restartGame()"
+                                        onmouseout="on_mouseout(this)">
+            <img src="assets/header/restart.svg">
         </div>
     </div>
     
+
+    <!-- The Board -->
     <div class="grid">
         <!-- Row 1 -->
         <div class="row">
@@ -104,30 +208,64 @@
     </div>
 
 
-    <!-- Start -->
+    <!-- Start container -->
     <div class="startBackground"></div>
+    <div class="startContainer">
+        <div class="playerNamesContainer">
 
-    <div class="startButton" onmouseover="on_mouseover(this)"
-                             onclick="setUpGame()"
-                             onmouseout="on_mouseout(this)">
-        <div>
-            START
+            <div class="playerNamesPrompt">
+                Enter players' initials:
+            </div>
+
+            <div class="playerContainer">
+                <div class="playerLabel">
+                    Player 1: 
+                </div>
+                <input id="player1field" type="text" maxlength="2">
+            </div>
+
+            <div class="playerContainer">
+                <div class="playerLabel">
+                    Player 2: 
+                </div>
+                <input id="player2field" type="text" maxlength="2">
+            </div>
+
+            <div class="playerContainer">
+                <div class="playerLabel">
+                    Player 3: 
+                </div>
+                <input id="player3field" type="text" maxlength="2">
+            </div>
+
+            <div class="playerContainer">
+                <div class="playerLabel">
+                    Player 4: 
+                </div>
+                <input id="player4field" type="text" maxlength="2">
+            </div>
+
+            <div class="playerContainer">
+                <div class="playerLabel">
+                    Player 5: 
+                </div>
+                <input id="player5field" type="text" maxlength="2">
+            </div>
+
+        <div class="startButton" onmouseover="on_mouseover(this)"
+                                 onclick="setUpGame()"
+                                 onmouseout="on_mouseout(this)">
+            <div>
+                START
+            </div> 
         </div> 
+    </div>
     </div>
 
     <!-- Loading gif -->
     <div class="loading-gif">
         <img src="assets/loading.gif">
     </div>
-
-    <!-- Setup - player names -->
-    <!-- <div class="playerNamesContainer">
-        <div class=""
-
-
-    </div>
-    <div class="submitPlayerNamesButton"></div> -->
-
 
 
 </body>

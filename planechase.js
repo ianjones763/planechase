@@ -6,6 +6,7 @@
  */
 
 
+const MAX_PLAYERS = 5;
 const NUM_PLANES = 85;
 const NUM_ROWS = 3;
 const NUM_COLS = 3;
@@ -119,9 +120,16 @@ function removeFocusPlane() {
  * Gets new cards from the deck and shifts the grid to keep centered
  */
 function moveToPlane() {
+    var row = currFocus[0];
+    var col = currFocus[1];
 
     // Can't walk to the current plane
-    if (currFocus[0] == 1 && currFocus[1] == 1) return;
+    if (row == 1 && col == 1) return;
+
+    // Can't walk diagonally to a face-up plane
+    if((row == 0 && col == 0) || (row == 0 && col == 2) || (row == 2 && col == 0) || (row == 2 && col == 2)) {
+        if (grid[row][col] != -1) return;
+    }
 
     removeFocusPlane();
     fadeOutCards();
@@ -229,65 +237,63 @@ function renderBoard(wait) {
  * Animates fadeOut of the start button and then starts the game
  */
 function setUpGame() {
-    var startBackground = document.querySelector(".startBackground");
     var startButton = document.querySelector(".startButton");
-    var restartButtonTemp = document.querySelector(".restartButtonTemp");
-    var restartButton = document.querySelector(".restartButton");
+    var startContainer = document.querySelector(".startContainer");
+    var gameHeader = document.querySelectorAll(".header .game");
+    var menuTitle = document.querySelector(".title.menu-title");
 
     // Get rid of hover animations
     startButton.onmouseout = null;
     startButton.onmouseover = null;
 
-    // Remove placeholder
-    restartButtonTemp.style.display = "none";
-    restartButton.style.display = "flex";
-
+    // fadeOut start menu stuff
     startButton.classList.add("animate-fadeOut");
-    restartButton.classList.add("animate-fadeIn");
+    startContainer.classList.add("animate-fadeOut");
+    menuTitle.classList.add("animate-fadeOut");
+
+    setupLifeTotals();
+
+    // fadeIn game header
+    gameHeader.forEach(function(d) {
+        console.log(d)
+        d.style.display = "flex";
+        d.classList.add("animate-fadeIn")
+    })
+
 
     // Wait for buttons to disappear before prompting for player names
     setTimeout(function() {
         startButton.style.display = "none";
+        startContainer.style.display = "none";
+        menuTitle.style.display = "none";
 
         // Get player names before rendering the board
-        // setupLifeTotals(function() {
-        //     console.log("done with setting up lifetotals");
-        //     dealCards()
-        // });
+        // setupLifeTotals();
+        dealCards()
 
-        dealCards();
     }, TRANSITION_DURATION);
 }
 
 
 /*
- *
+ * Updates the header to display the entered names of the players and the starting life total
  */
 function setupLifeTotals() {
-
-    var submitted = false;
-
-    // Listen for if user has input the names of players
-    document.getElementById("submitPlayerNamesButton").addEventListener('click', function() {
-
-
-    });
-
-    // Wait for player names to be submitted
-    function waitForUserInput() {
-        setTimeout(function() {
-
-            // do stuff
-
-            if (!submitted) {
-                console.log('here')
-                waitForUserInput();
-            }
     
-        }, 300); 
-    }
+    for (var i = 1; i < MAX_PLAYERS+1; i++) {
+        // get name from input field
+        var nameID = "player" + i + "field";
+        var name = document.getElementById(nameID).value.toUpperCase(); 
 
-    waitForUserInput();
+        // display names of players in header
+        var lifeID = "player" + i + "Life";
+        var lifeLabel = document.getElementById(lifeID);
+        if (name != "") {
+            lifeLabel.getElementsByClassName("playerName")[0].innerHTML = name;
+        } else {
+            lifeLabel.style.display = "none";   
+        }
+    } 
 }
 
 

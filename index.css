@@ -20,62 +20,137 @@ html, body {
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    height: 8%;
-    background-color: rgb(184, 176, 255);
+    height: 70px;
+    background-color: black;
+    border-bottom: 3px solid #927A2E;
 }
 
-.title {
-    margin-top: 15px;
-    font-family: "Magic";
-    font-size: 3em;
+.title.menu-title {
+    height: 50px;
+    width: 267px;
+    position: absolute;
+    margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    right: 0;
+    margin-top: 5px;
 }
 
-.home {
-    margin-left: 20px;
+.header img {
+    height: 60%;
+    width: auto; 
+}
+
+.header .game {
+    display: none;
+    /* opacity: 0; */
+}
+
+.title.game {
+    height: 50px;
+    margin-top: 5px;
+    margin-left: 5px;
+}
+
+.title img {
+    height: 90%;
+}
+
+.die-container {
     display: flex;
     flex-direction: row;
-    width: 70px;
+    margin-top: 2px;
 }
 
-.planeswalk-icon {
-    margin: auto 10px;
-    max-width: 100%;
-    height: 80%;
-    object-fit: contain;
+.rollButton {
+    margin-right: 38px;
 }
 
-.chaos-icon {
-    margin: auto 10px;
-    max-width: 100%;
-    height: 60%;
-    object-fit: contain;
-}
-
-.restartButtonTemp {
-    margin-right: 20px;
+.lifetotal-container {
     display: flex;
+    flex-direction: row;
+}
+
+.playerlife-container {
+    display: flex;
+    flex-direction: row;
     justify-content: center;
     align-items: center;
-    width: 70px;
-    height: 80%;
+    margin-right: 30px;
+}
+
+.playerName {
+    font-family: "Magic";
+    font-size: 2em;
+    margin-left: 16px;
+    margin-right: 2px;
+    padding: 0 8px;
+    padding-top: 7px;
+    background: white;
+    border: 2px solid #927A2E;
+    border-radius: 10px;
 }
 
 .restartButton {
-    margin-right: 20px;
+    margin-right: 10px;
     display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 70px;
-    height: 80%;
-    border-radius: 10px;
-    background-color: rgb(158, 147, 255);
-    opacity: 0;
-    display: none;
 }
 
 .restartButton:hover {
     cursor: pointer;
 }
+
+.playerNamesContainer {
+    position: absolute;
+    width: 50%;
+    height: 470px;
+    margin: auto auto;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0; 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    border-radius: 10px;
+    background-color: rgb(97, 97, 97); 
+    color: #927A2E;
+}
+
+.playerNamesPrompt {
+    margin-top: 30px;
+    font-size: 2em;
+}
+
+.playerContainer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin: 10px 0;
+    font-size: 1.5em;
+}
+
+.playerLabel {
+    margin-right: 10px;
+}
+
+.playerContainer input {
+    width: 60px;
+    padding: 5px 10px;
+    box-sizing: border-box;
+    border: 3px solid black;
+    -webkit-transition: 0.5s;
+    transition: 0.5s;
+    outline: none;
+    font-size: 1em;
+    text-transform: uppercase;
+}
+
+.playerContainer input:focus {
+    border: 3px solid #927A2E;
+}
+
 
 .startBackground {
     position: absolute;
@@ -90,20 +165,20 @@ html, body {
 
 .startButton {
     position: absolute;
-    width: 200px;
-    height: 100px;
-    margin: auto auto;
+    width: 110px;
+    height: 50px;
+    margin: 0 auto;
     left: 0;
     right: 0;
-    top: 0;
-    bottom: 0;
+    bottom: 20px;
+
 
     display: flex;
     justify-content: center;
     align-items: center;
     border-radius: 10px;
-    font-size: 3em;
-    background-color: rgb(158, 147, 255); 
+    font-size: 1.5em;
+    background-color: black; 
 }
 
 .startButton:hover {
