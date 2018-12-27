@@ -59,10 +59,11 @@ function focusPlane(indices) {
     background.style.display = "inline";
     focusPlane.style.display = "flex"; 
 
-    // Don't give planeswalk option if looking at current plane
-    if(!(row == 1 && col == 1)) {
+    // Don't give planeswalk option if looking at current plane, or if diagonal plane and face-up
+    if (!(row == 1 && col == 1) && !(grid[row][col] != -1 && isDiagonal(indices))) {
         planeswalkButton.style.display = "flex";
     }
+
 
     // Set image for focus
     var imageName;
@@ -83,7 +84,7 @@ function focusPlane(indices) {
     focusPlane.classList.add("animate-fadeIn");
 
     // Don't give planeswalk option if looking at current plane
-    if(!(row == 1 && col == 1)) {
+    if(!(row == 1 && col == 1) && !(grid[row][col] != -1 && isDiagonal(indices))) {
         planeswalkButton.classList.remove("animate-fadeOut");
         planeswalkButton.classList.add("animate-fadeIn"); 
     }
@@ -179,7 +180,7 @@ function moveToPlane() {
         
         // redraw board    
         grid = temp;
-        renderBoard(false);
+        renderBoard(false, true);
     }, TRANSITION_DURATION);
 }
 
@@ -189,7 +190,7 @@ function moveToPlane() {
  * @Params: 
  * wait -- true if rendering should wait for images to load longer (initial game setup)
  */
-function renderBoard(wait) {
+function renderBoard(wait, focus) {
     var duration = wait ? LOADING_DURATION : 50;
     var startBackground = document.querySelector(".startBackground");
     startBackground.style.display = "inline"; 
@@ -229,6 +230,12 @@ function renderBoard(wait) {
         loadingGif.style.display = "none";
 
         startBackground.style.display = "none";
+
+        if (focus) {
+            setTimeout(function() {
+                focusPlane([1, 1]);
+            }, TRANSITION_DURATION);
+        }
     }, duration);
 }
 
@@ -255,7 +262,6 @@ function setUpGame() {
 
     // fadeIn game header
     gameHeader.forEach(function(d) {
-        console.log(d)
         d.style.display = "flex";
         d.classList.add("animate-fadeIn")
     })
@@ -268,7 +274,6 @@ function setUpGame() {
         menuTitle.style.display = "none";
 
         // Get player names before rendering the board
-        // setupLifeTotals();
         dealCards()
 
     }, TRANSITION_DURATION);
@@ -289,7 +294,8 @@ function setupLifeTotals() {
         var lifeID = "player" + i + "Life";
         var lifeLabel = document.getElementById(lifeID);
         if (name != "") {
-            lifeLabel.getElementsByClassName("playerName")[0].innerHTML = name;
+            name += ":&nbsp;"
+            lifeLabel.getElementsByClassName("playerName")[0].getElementsByClassName("name")[0].innerHTML = name;
         } else {
             lifeLabel.style.display = "none";   
         }
@@ -301,6 +307,7 @@ function setupLifeTotals() {
  * Animates the fadeOut of all the cards and then restarts the game
  */
 function restartGame() {
+    removeFocusPlane();
     fadeOutCards();
 
     setTimeout(function() {
@@ -341,7 +348,7 @@ function dealCards() {
         grid[1][2] = drawCard();
         grid[2][1] = drawCard();
 
-        renderBoard(true); 
+        renderBoard(true, false); 
     }
 
     deck = shuffle(deck);
@@ -365,7 +372,6 @@ function drawCard() {
     }
 
     return card;
-
 }
 
 
@@ -382,4 +388,44 @@ function fadeOutCards() {
         d.classList.remove("animate-fadeIn");
         d.classList.add("animate-fadeOut");
     });
+}
+
+
+/*
+ * Updates the header display to add or subtract life from a given player's life total
+ */
+function updateLifeTotal(playerID, amount) {
+    var lifeDiv = document.getElementById(playerID).getElementsByClassName("playerName")[0].getElementsByClassName("life")[0];
+    var life = parseInt(lifeDiv.innerHTML, 10);
+    life += amount;
+    lifeDiv.innerHTML = life;
+}
+
+
+/*
+ * Simulates rolling the planar die and updates header display
+ */
+function rollDie() {
+    var rand = Math.floor(Math.random() * 6) + 1;     // generate random die roll between 1 and 6
+    var dieDiv = document.getElementById("planardie");
+
+    if (rand == 1) {
+        dieDiv.src = "assets/header/chaos.svg";
+    }
+    if (rand >= 2 && rand <= 5) {
+        dieDiv.src = "assets/header/blank.svg";
+    }
+    if (rand == 6) {
+        dieDiv.src = "assets/header/planeswalk.svg";
+    }
+}
+
+
+/*
+ * Returns true if on corner of the grid
+ */
+function isDiagonal(indices) {
+    var row = indices[0],
+        col = indices[1];
+    return (row == 0 && col == 0) || (row == 0 && col == 2) || (row == 2 && col == 0) || (row == 2 && col == 2); 
 }

@@ -29,7 +29,7 @@
             </div>
 
             <div class="die">
-                <img src="assets/header/die.svg">
+                <img id="planardie" src="assets/header/die.svg">
             </div>
         </div>
 
@@ -39,15 +39,16 @@
             <!-- Player 1 -->
             <div id="player1Life" class="playerlife-container">
                 <div class="minus" onmouseover="on_mouseover(this)"
-                                   onclick="updateLifeTotal(-1)"
+                                   onclick="updateLifeTotal('player1Life', -1)"
                                    onmouseout="on_mouseout(this)">
                     <img src="assets/header/minus.svg">
                 </div>
                 <div class="playerName">
-                    IJ: 20
+                    <div class="name">IJ:&nbsp; </div>
+                    <div class="life">20</div>
                 </div>
                 <div class="plus" onmouseover="on_mouseover(this)"
-                                  onclick="updateLifeTotal(1)"
+                                  onclick="updateLifeTotal('player1Life', 1)"
                                   onmouseout="on_mouseout(this)">
                     <img src="assets/header/plus.svg">
                 </div>
@@ -56,15 +57,16 @@
             <!-- Player 2 -->
             <div id="player2Life" class="playerlife-container">
                 <div class="minus" onmouseover="on_mouseover(this)"
-                                   onclick="updateLifeTotal(-1)"
+                                   onclick="updateLifeTotal('player2Life', -1)"
                                    onmouseout="on_mouseout(this)">
                     <img src="assets/header/minus.svg">
                 </div>
                 <div class="playerName">
-                    IJ: 20
+                    <div class="name">IJ:&nbsp; </div>
+                    <div class="life">20</div>
                 </div>
                 <div class="plus" onmouseover="on_mouseover(this)"
-                                  onclick="updateLifeTotal(1)"
+                                  onclick="updateLifeTotal('player2Life', 1)"
                                   onmouseout="on_mouseout(this)">
                     <img src="assets/header/plus.svg">
                 </div>
@@ -73,15 +75,16 @@
             <!-- Player 3 -->
             <div id="player3Life" class="playerlife-container">
                 <div class="minus" onmouseover="on_mouseover(this)"
-                                   onclick="updateLifeTotal(-1)"
+                                   onclick="updateLifeTotal('player3Life', -1)"
                                    onmouseout="on_mouseout(this)">
                     <img src="assets/header/minus.svg">
                 </div>
                 <div class="playerName">
-                    IJ: 20
+                    <div class="name">IJ:&nbsp; </div>
+                    <div class="life">20</div>
                 </div>
                 <div class="plus" onmouseover="on_mouseover(this)"
-                                  onclick="updateLifeTotal(1)"
+                                  onclick="updateLifeTotal('player3Life', 1)"
                                   onmouseout="on_mouseout(this)">
                     <img src="assets/header/plus.svg">
                 </div>
@@ -90,15 +93,16 @@
             <!-- Player 4 -->
             <div id="player4Life" class="playerlife-container">
                 <div class="minus" onmouseover="on_mouseover(this)"
-                                   onclick="updateLifeTotal(-1)"
+                                   onclick="updateLifeTotal('player4Life', -1)"
                                    onmouseout="on_mouseout(this)">
                     <img src="assets/header/minus.svg">
                 </div>
                 <div class="playerName">
-                    IJ: 20
+                    <div class="name">IJ:&nbsp; </div>
+                    <div class="life">20</div>
                 </div>
                 <div class="plus" onmouseover="on_mouseover(this)"
-                                  onclick="updateLifeTotal(1)"
+                                  onclick="updateLifeTotal('player4Life', 1)"
                                   onmouseout="on_mouseout(this)">
                     <img src="assets/header/plus.svg">
                 </div>
@@ -107,15 +111,16 @@
             <!-- Player 5 -->
             <div id="player5Life" class="playerlife-container">
                 <div class="minus" onmouseover="on_mouseover(this)"
-                                   onclick="updateLifeTotal(-1)"
+                                   onclick="updateLifeTotal('player5Life', -1)"
                                    onmouseout="on_mouseout(this)">
                     <img src="assets/header/minus.svg">
                 </div>
                 <div class="playerName">
-                    IJ: 20
+                    <div class="name">IJ:&nbsp; </div>
+                    <div class="life">20</div>
                 </div>
                 <div class="plus" onmouseover="on_mouseover(this)"
-                                  onclick="updateLifeTotal(1)"
+                                  onclick="updateLifeTotal('player5Life', 1)"
                                   onmouseout="on_mouseout(this)">
                     <img src="assets/header/plus.svg">
                 </div>
@@ -197,13 +202,11 @@
 
     <div class="focusPlane">
         <img src="">
-    </div>
 
-    <div class="planeswalkButton" onmouseover="on_mouseover(this)"
-                                  onclick="moveToPlane()"
-                                  onmouseout="on_mouseout(this)">
-        <div>
-            PLANESWALK 
+        <div class="planeswalkButton" onmouseover="on_mouseover(this)"
+                                    onclick="moveToPlane()"
+                                    onmouseout="on_mouseout(this)">
+            <img src="assets/game/planeswalklabel.svg">
         </div>
     </div>
 
@@ -217,54 +220,47 @@
                 Enter players' initials:
             </div>
 
-            <div class="playerContainer">
-                <div class="playerLabel">
-                    Player 1: 
-                </div>
-                <input id="player1field" type="text" maxlength="2">
-            </div>
+            <div class="player-nameentry-container">
 
-            <div class="playerContainer">
-                <div class="playerLabel">
-                    Player 2: 
+                <div class="player-container-prompts">
+                    <div class="playerLabel">
+                        Player 1:
+                    </div>
+                    <div class="playerLabel">
+                        Player 2: 
+                    </div>
+                    <div class="playerLabel">
+                        Player 3: 
+                    </div>
+                    <div class="playerLabel">
+                        Player 4: 
+                    </div>
+                    <div class="playerLabel">
+                        Player 5: 
+                    </div>
                 </div>
-                <input id="player2field" type="text" maxlength="2">
-            </div>
 
-            <div class="playerContainer">
-                <div class="playerLabel">
-                    Player 3: 
+                <div class="player-container-responses">
+                    <input id="player1field" type="text" maxlength="2"> 
+                    <input id="player2field" type="text" maxlength="2">
+                    <input id="player3field" type="text" maxlength="2">
+                    <input id="player4field" type="text" maxlength="2">
+                    <input id="player5field" type="text" maxlength="2">
                 </div>
-                <input id="player3field" type="text" maxlength="2">
-            </div>
 
-            <div class="playerContainer">
-                <div class="playerLabel">
-                    Player 4: 
-                </div>
-                <input id="player4field" type="text" maxlength="2">
-            </div>
-
-            <div class="playerContainer">
-                <div class="playerLabel">
-                    Player 5: 
-                </div>
-                <input id="player5field" type="text" maxlength="2">
             </div>
 
         <div class="startButton" onmouseover="on_mouseover(this)"
                                  onclick="setUpGame()"
                                  onmouseout="on_mouseout(this)">
-            <div>
-                START
-            </div> 
+            <img src="assets/start/start.svg">
         </div> 
     </div>
     </div>
 
     <!-- Loading gif -->
     <div class="loading-gif">
-        <img src="assets/loading.gif">
+        <img src="assets/start/loading.gif">
     </div>
 
 

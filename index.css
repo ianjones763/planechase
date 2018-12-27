@@ -1,12 +1,7 @@
 html, body {
     margin: 0;
     padding: 0;
-    font-family: 'Avenir', serif;
-}
-
-@font-face {
-    font-family: "Avenir";
-    src: url(assets/AvenirLTStd-Book.otf) format("opentype");
+    font-family: 'Magic', serif;
 }
 
 @font-face {
@@ -19,10 +14,11 @@ html, body {
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    width: 100%;
+    width: calc(100% - 10px);
     height: 70px;
     background-color: black;
-    border-bottom: 3px solid #927A2E;
+    border: 5px solid #927A2E;
+    /* border-bottom: 3px solid #927A2E; */
 }
 
 .title.menu-title {
@@ -80,6 +76,8 @@ html, body {
 }
 
 .playerName {
+    display: flex;
+    flex-direction: row;
     font-family: "Magic";
     font-size: 2em;
     margin-left: 16px;
@@ -89,6 +87,11 @@ html, body {
     background: white;
     border: 2px solid #927A2E;
     border-radius: 10px;
+}
+
+.playerName .life {
+    text-align: center;
+    width: 30px;
 }
 
 .restartButton {
@@ -103,18 +106,18 @@ html, body {
 .playerNamesContainer {
     position: absolute;
     width: 50%;
-    height: 470px;
+    height: 80%;
     margin: auto auto;
     left: 0;
     right: 0;
-    top: 0;
+    top: 40px;
     bottom: 0; 
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: space-between;
 
-    border-radius: 10px;
-    background-color: rgb(97, 97, 97); 
+    font-size: 1.5em;
     color: #927A2E;
 }
 
@@ -123,32 +126,54 @@ html, body {
     font-size: 2em;
 }
 
-.playerContainer {
+.player-nameentry-container {
     display: flex;
     flex-direction: row;
-    align-items: center;
-    margin: 10px 0;
     font-size: 1.5em;
+}
+
+.player-container-prompts {
+    height: 60%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+
+.player-container-responses {
+    height: 60%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; 
+    justify-content: space-between;
 }
 
 .playerLabel {
     margin-right: 10px;
 }
 
-.playerContainer input {
+.player-container-responses input {
     width: 60px;
     padding: 5px 10px;
     box-sizing: border-box;
     border: 3px solid black;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    /* align-self: flex-end; */
+
+    outline: none;
+    font-size: .75em;
+    text-transform: uppercase;
+    text-align: center;
+
     -webkit-transition: 0.5s;
     transition: 0.5s;
-    outline: none;
-    font-size: 1em;
-    text-transform: uppercase;
 }
 
-.playerContainer input:focus {
-    border: 3px solid #927A2E;
+.player-container-responses input:focus {
+    border-bottom: 3px solid #927A2E;
+
 }
 
 
@@ -164,14 +189,8 @@ html, body {
 }
 
 .startButton {
-    position: absolute;
-    width: 110px;
-    height: 50px;
-    margin: 0 auto;
-    left: 0;
-    right: 0;
-    bottom: 20px;
-
+    width: 150px;
+    margin-top: 40px;
 
     display: flex;
     justify-content: center;
@@ -185,8 +204,9 @@ html, body {
     cursor: pointer;
 }
 
-.startButton div {
-    margin-top: 10px;
+.startButton img {
+    width: 100%;
+    height: auto;
 }
 
 .loading-gif {
@@ -210,8 +230,11 @@ html, body {
 .grid {
     display: flex;
     flex-direction: column;
-    height: 92%;
-    width: 100%;
+    height: calc(100% - 85px);
+    width: calc(100% - 10px);
+    border-left: 5px solid #927A2E;
+    border-right: 5px solid #927A2E;
+    border-bottom: 5px solid #927A2E;
 }
 
 .row {
@@ -242,9 +265,12 @@ html, body {
 }
 
 #cell11 img {
-    background-color: rgba(255, 217, 0, 0.8);
+    background-color: #927A2E;
+    border-top: 5px solid #927A2E;
+    border-bottom: 5px solid #927A2E;
+    /* background-color: rgba(255, 217, 0, 0.8);
     border-top: 5px solid rgb(255, 215, 0, 0.8);
-    border-bottom: 5px solid rgb(255, 215, 0, 0.8);
+    border-bottom: 5px solid rgb(255, 215, 0, 0.8); */
     border-radius: 5px;
 }
 
@@ -255,11 +281,12 @@ html, body {
     margin: auto auto;
     left: 0;
     right: 0;
-    top: 0;
+    top: 30px;
     bottom: 0;
 
     opacity: 1;
     display: none;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
 }
@@ -267,21 +294,20 @@ html, body {
 .focusPlane img {
     max-width: 100%;
     height: 100%;
-    margin: auto auto;
     object-fit: contain;
 }
 
 .focusPlaneBackground {
     position: absolute;
     width: 100%;
-    height: 100%;
+    height: calc(100% - 75px);
     margin: auto auto;
     left: 0;
     right: 0;
-    top: 0;
+    top: 85px;
     bottom: 0;
 
-    background-color: rgba(233, 233, 233, .8);
+    background-color: rgba(39, 39, 39, 0.8);
     display: none; 
 }
 
@@ -290,22 +316,17 @@ html, body {
 }
 
 .planeswalkButton {
+    margin-top: 10px;
     display: flex;
     justify-content: center;
     align-items: center;
-    position: absolute;
-    width: 200px;
-    height: 90px;
-    margin: 0 auto;
-    left: 0;
-    right: 0;
-    bottom: 20;
-    border-radius: 10px;
-
-    font-size: 1.5em;
-
-    background-color: rgb(158, 147, 255);
+    width: 250px;
     display: none;  
+}
+
+.planeswalkButton img {
+    width: 100%;
+    height: auto;
 }
 
 .planeswalkButton:hover {
