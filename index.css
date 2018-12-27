@@ -159,6 +159,8 @@ html, body {
     border-left: none;
     border-right: none;
 
+    caret-color: #927A2E;
+
     outline: none;
     font-family: "Magic";
     font-size: .75em;
@@ -171,7 +173,6 @@ html, body {
 
 .player-container-responses input:focus {
     border-bottom: 3px solid #927A2E;
-
 }
 
 .startBackground {

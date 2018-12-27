@@ -12,7 +12,7 @@ const NUM_ROWS = 3;
 const NUM_COLS = 3;
 const TRANSITION_DURATION = 1000;               // All animations
 const LOADING_DURATION = 2500;                  // Initial loading gif duration
-const PHENOMENA = [2, 5, 6, 7, 8, 9, 17];       // Keep track of phenomena image indices
+const PHENOMENA = [9, 27, 40, 43, 53, 58, 65, 81];       // Keep track of phenomena image indices
 const SPATIAL_MERGING = 6;                      // Keep track of Spatial Merging image index
 const COUNTER_PLANES = [3, 33, 41, 44]          // Planes that need counters
 const CHAOS_PLANES = [54, 66]                   // Planes that have chaos abilities that need to be handled
@@ -31,21 +31,37 @@ var currFocus;          // Current zoomed in card
 
 
 /*
- * Highlight cell
+ * Highlight element
  */
-function on_mouseover(cell) {
+function on_mouseover(elem) {
     // Remove other animations
-    cell.classList.remove("animate-fadeIn");
-    cell.classList.remove("animate-fadeOut");
-    cell.style.opacity = 0.5;
+    elem.classList.remove("animate-fadeIn");
+    elem.classList.remove("animate-fadeOut");
+    elem.style.opacity = 0.5;
 }
 
 
 /*
- * Dehighlight cell
+ * Dehighlight element
  */
-function on_mouseout(cell) {
-    cell.style.opacity = 1.0;
+function on_mouseout(elem) {
+    elem.style.opacity = 1.0;
+}
+
+
+/*
+ * Change opacity on click
+ */
+function on_mousedown(elem) {
+    elem.style.opacity = 1.0;
+}
+
+
+/*
+ * Change opacity on click
+ */
+function on_mouseup(elem) {
+    elem.style.opacity = 0.5;
 }
 
 
@@ -69,11 +85,11 @@ function displayUniquePlanes(indices) {
     var card = grid[row][col];
 
     // For testing the chaos stuff
-//     var chaosContainer = document.querySelector(".chaos-container");
-//     chaosContainer.style.display = "flex";
-//     chaosContainer.classList.remove("animate-fadeOut");
-//     chaosContainer.classList.add("animate-fadeIn"); 
-//     return;
+    // var chaosContainer = document.querySelector(".chaos-container");
+    // chaosContainer.style.display = "flex";
+    // chaosContainer.classList.remove("animate-fadeOut");
+    // chaosContainer.classList.add("animate-fadeIn"); 
+    // return;
 
     if (row == 1 && col == 1) {
         // Plane needs to display counter
@@ -548,6 +564,12 @@ function flipCoin() {
  * Handles when chaos is rolled on certain unique planes (Pools of Becoming, Stairs to Infinity)
  */
 function chaosRolled() {
+    chaosContainer = document.querySelector(".chaos-container");
+    chaosContainer.onmouseover = null;
+    chaosContainer.onmouseout = null;
+    on_mouseout(chaosContainer);
+    chaosContainer.setAttribute('onmouseover', "on_mouseover(this)");
+    chaosContainer.setAttribute('onmouseout', "on_mouseout(this)");
     var card = grid[1][1];
 
     // Pools of Becoming

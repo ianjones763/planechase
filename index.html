@@ -18,7 +18,9 @@
         <!-- Logo during gameplay -->
         <div class="title game" onmouseover="on_mouseover(this)"
                                 onclick="openMenu()"
-                                onmouseout="on_mouseout(this)">
+                                onmouseout="on_mouseout(this)"
+                                onmousedown="on_mousedown(this)"
+                                onmouseup="on_mouseup(this)">
             <img src="assets/header/logo.svg">
         </div>
 
@@ -26,7 +28,9 @@
         <div class="die-container game">
             <div class="rollButton" onmouseover="on_mouseover(this)"
                                     onclick="rollDie()"
-                                    onmouseout="on_mouseout(this)">
+                                    onmouseout="on_mouseout(this)"
+                                    onmousedown="on_mousedown(this)"
+                                    onmouseup="on_mouseup(this)">
                 <img src="assets/header/rollButton.svg">
             </div>
 
@@ -42,7 +46,9 @@
             <div id="player1Life" class="playerlife-container">
                 <div class="minus" onmouseover="on_mouseover(this)"
                                    onclick="updateLifeTotal('player1Life', -1)"
-                                   onmouseout="on_mouseout(this)">
+                                   onmouseout="on_mouseout(this)"
+                                   onmousedown="on_mousedown(this)"
+                                   onmouseup="on_mouseup(this)">
                     <img src="assets/header/minus.svg">
                 </div>
                 <div class="playerName">
@@ -51,7 +57,9 @@
                 </div>
                 <div class="plus" onmouseover="on_mouseover(this)"
                                   onclick="updateLifeTotal('player1Life', 1)"
-                                  onmouseout="on_mouseout(this)">
+                                  onmouseout="on_mouseout(this)"
+                                  onmousedown="on_mousedown(this)"
+                                  onmouseup="on_mouseup(this)">
                     <img src="assets/header/plus.svg">
                 </div>
             </div>
@@ -60,7 +68,9 @@
             <div id="player2Life" class="playerlife-container">
                 <div class="minus" onmouseover="on_mouseover(this)"
                                    onclick="updateLifeTotal('player2Life', -1)"
-                                   onmouseout="on_mouseout(this)">
+                                   onmouseout="on_mouseout(this)"
+                                   onmousedown="on_mousedown(this)"
+                                   onmouseup="on_mouseup(this)">
                     <img src="assets/header/minus.svg">
                 </div>
                 <div class="playerName">
@@ -69,7 +79,9 @@
                 </div>
                 <div class="plus" onmouseover="on_mouseover(this)"
                                   onclick="updateLifeTotal('player2Life', 1)"
-                                  onmouseout="on_mouseout(this)">
+                                  onmouseout="on_mouseout(this)"
+                                  onmousedown="on_mousedown(this)"
+                                  onmouseup="on_mouseup(this)">
                     <img src="assets/header/plus.svg">
                 </div>
             </div>
@@ -78,7 +90,9 @@
             <div id="player3Life" class="playerlife-container">
                 <div class="minus" onmouseover="on_mouseover(this)"
                                    onclick="updateLifeTotal('player3Life', -1)"
-                                   onmouseout="on_mouseout(this)">
+                                   onmouseout="on_mouseout(this)"
+                                   onmousedown="on_mousedown(this)"
+                                   onmouseup="on_mouseup(this)">
                     <img src="assets/header/minus.svg">
                 </div>
                 <div class="playerName">
@@ -87,7 +101,9 @@
                 </div>
                 <div class="plus" onmouseover="on_mouseover(this)"
                                   onclick="updateLifeTotal('player3Life', 1)"
-                                  onmouseout="on_mouseout(this)">
+                                  onmouseout="on_mouseout(this)"
+                                  onmousedown="on_mousedown(this)"
+                                  onmouseup="on_mouseup(this)">
                     <img src="assets/header/plus.svg">
                 </div>
             </div>
@@ -96,7 +112,9 @@
             <div id="player4Life" class="playerlife-container">
                 <div class="minus" onmouseover="on_mouseover(this)"
                                    onclick="updateLifeTotal('player4Life', -1)"
-                                   onmouseout="on_mouseout(this)">
+                                   onmouseout="on_mouseout(this)"
+                                   onmousedown="on_mousedown(this)"
+                                   onmouseup="on_mouseup(this)">
                     <img src="assets/header/minus.svg">
                 </div>
                 <div class="playerName">
@@ -105,7 +123,9 @@
                 </div>
                 <div class="plus" onmouseover="on_mouseover(this)"
                                   onclick="updateLifeTotal('player4Life', 1)"
-                                  onmouseout="on_mouseout(this)">
+                                  onmouseout="on_mouseout(this)"
+                                  onmousedown="on_mousedown(this)"
+                                  onmouseup="on_mouseup(this)">
                     <img src="assets/header/plus.svg">
                 </div>
             </div>
@@ -114,7 +134,9 @@
             <div id="player5Life" class="playerlife-container">
                 <div class="minus" onmouseover="on_mouseover(this)"
                                    onclick="updateLifeTotal('player5Life', -1)"
-                                   onmouseout="on_mouseout(this)">
+                                   onmouseout="on_mouseout(this)"
+                                   onmousedown="on_mousedown(this)"
+                                   onmouseup="on_mouseup(this)">
                     <img src="assets/header/minus.svg">
                 </div>
                 <div class="playerName">
@@ -123,7 +145,9 @@
                 </div>
                 <div class="plus" onmouseover="on_mouseover(this)"
                                   onclick="updateLifeTotal('player5Life', 1)"
-                                  onmouseout="on_mouseout(this)">
+                                  onmouseout="on_mouseout(this)"
+                                  onmousedown="on_mousedown(this)"
+                                  onmouseup="on_mouseup(this)">
                     <img src="assets/header/plus.svg">
                 </div>
             </div>
@@ -132,7 +156,9 @@
         <!-- Restart button -->
         <div class="restartButton game" onmouseover="on_mouseover(this)"
                                         onclick="restartGame()"
-                                        onmouseout="on_mouseout(this)">
+                                        onmouseout="on_mouseout(this)"
+                                        onmousedown="on_mousedown(this)"
+                                        onmouseup="on_mouseup(this)">
             <img src="assets/header/restart.svg">
         </div>
     </div>
@@ -208,7 +234,9 @@
         <!-- Planeswalk -->
         <div class="planeswalkButton" onmouseover="on_mouseover(this)"
                                       onclick="moveToPlane()"
-                                      onmouseout="on_mouseout(this)">
+                                      onmouseout="on_mouseout(this)"
+                                      onmousedown="on_mousedown(this)"
+                                      onmouseup="on_mouseup(this)">
             <img src="assets/game/planeswalklabel.svg">
         </div>
 
@@ -225,15 +253,19 @@
             </div>
             <div class="plus-img" onmouseover="on_mouseover(this)"
                                   onclick="addCounter()"
-                                  onmouseout="on_mouseout(this)">
+                                  onmouseout="on_mouseout(this)"
+                                  onmousedown="on_mousedown(this)"
+                                  onmouseup="on_mouseup(this)">
                 <img src="assets/game/plus.svg">
             </div>
         </div>
 
         <!-- Chaos -->
         <div class="chaos-container uniqueplane" onmouseover="on_mouseover(this)"
-                                     onclick="chaosRolled()"
-                                     onmouseout="on_mouseout(this)">
+                                                 onclick="chaosRolled()"
+                                                 onmouseout="on_mouseout(this)"
+                                                 onmousedown="on_mousedown(this)"
+                                                 onmouseup="on_mouseup(this)">
             <img src="assets/game/chaos.svg">
         </div>
 
@@ -241,7 +273,9 @@
         <div class="coinflip-container uniqueplane">
             <div class="coinflip-prompt" onmouseover="on_mouseover(this)"
                                          onclick="flipCoin()"
-                                         onmouseout="on_mouseout(this)">
+                                         onmouseout="on_mouseout(this)"
+                                         onmousedown="on_mousedown(this)"
+                                         onmouseup="on_mouseup(this)">
                 <img src="assets/game/coin-prompt.svg">
             </div>
 
@@ -259,13 +293,17 @@
         <div class="top-bottom-container">
             <div class="top-button" onmouseover="on_mouseover(this)"
                                     onclick="removeStairsToInfinity(true)"
-                                    onmouseout="on_mouseout(this)">
+                                    onmouseout="on_mouseout(this)"
+                                    onmousedown="on_mousedown(this)"
+                                    onmouseup="on_mouseup(this)">
                 <img src="assets/game/top.svg">
             </div>
 
             <div class="bottom-button" onmouseover="on_mouseover(this)"
-                                        onclick="removeStairsToInfinity(false)"
-                                        onmouseout="on_mouseout(this)">
+                                       onclick="removeStairsToInfinity(false)"
+                                       onmouseout="on_mouseout(this)"
+                                       onmousedown="on_mousedown(this)"
+                                       onmouseup="on_mouseup(this)">
                 <img src="assets/game/bottom.svg">
             </div>
         </div>
@@ -313,7 +351,9 @@
 
         <div class="startButton" onmouseover="on_mouseover(this)"
                                  onclick="setUpGame()"
-                                 onmouseout="on_mouseout(this)">
+                                 onmouseout="on_mouseout(this)"
+                                 onmousedown="on_mousedown(this)"
+                                 onmouseup="on_mouseup(this)">
             <img src="assets/start/start.svg">
         </div> 
     </div>
@@ -332,14 +372,18 @@
         </div>
         <div class="mainmenu-option yes" onmouseover="on_mouseover(this)"
                                          onclick="quitGame(true)"
-                                         onmouseout="on_mouseout(this)">
+                                         onmouseout="on_mouseout(this)"
+                                         onmousedown="on_mousedown(this)"
+                                         onmouseup="on_mouseup(this)">
             <div>
                 YES 
             </div>
         </div>
         <div class="mainmenu-option no" onmouseover="on_mouseover(this)"
                                         onclick="quitGame(false)"
-                                        onmouseout="on_mouseout(this)">
+                                        onmouseout="on_mouseout(this)"
+                                        onmousedown="on_mousedown(this)"
+                                        onmouseup="on_mouseup(this)">
             <div>
                 NO
             </div>
