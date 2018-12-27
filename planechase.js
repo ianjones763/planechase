@@ -14,9 +14,10 @@ const TRANSITION_DURATION = 1000;               // All animations
 const LOADING_DURATION = 2500;                  // Initial loading gif duration
 const PHENOMENA = [2, 5, 6, 7, 8, 9, 17];       // Keep track of phenomena image indices
 const SPATIAL_MERGING = 6;                      // Keep track of Spatial Merging image index
-const COUNTER_PLANES = [15, 22, 35, 71]         // Planes that need counters
-const CHAOS_PLANES = [62, 80]                   // Planes that have chaos abilities that need to be handled
-const COIN_PLANES = [82]                        // Planes that need coin flips
+const COUNTER_PLANES = [3, 33, 41, 44]          // Planes that need counters
+const CHAOS_PLANES = [54, 66]                   // Planes that have chaos abilities that need to be handled
+const COIN_PLANES = [39]                        // Planes that need coin flips
+const REVEALED_PLANES = []                      // Keep track of currently revealed planes
 
 
 var deck = [];
@@ -83,19 +84,19 @@ function displayUniquePlanes(indices) {
     
             var counterImg = document.querySelector(".counter-img").getElementsByTagName("img")[0];
             // Aretopolis --> scroll counters
-            if (card == 15) {
+            if (card == 3) {
                 counterImg = "assets/game/scroll-counter.svg";
             }
             // Kilnspire District --> charge counter
-            else if (card == 22) {
+            else if (card == 33) {
                 counterImg.src = "assets/game/charge-counter.svg"; 
             }
             // Mount Keralia --> pressure counter
-            else if (card == 35) {
+            else if (card == 41) {
                 counterImg.src = "assets/game/pressure-counter.svg"; 
             }
             // Naar Isle --> flame counter
-            else if (card == 71) {
+            else if (card == 44) {
                 counterImg.src = "assets/game/flame-counter.svg"; 
             }
 
@@ -544,7 +545,7 @@ function flipCoin() {
 
 
 /*
- *
+ * Handles when chaos is rolled on certain unique planes (Pools of Becoming, Stairs to Infinity)
  */
 function chaosRolled() {
     var card = grid[1][1];
@@ -552,11 +553,90 @@ function chaosRolled() {
     // Pools of Becoming
     if (card == 62) {
         console.log("pools of becoming chaos")
+
+        var card1 = deck.shift();
+        var card2 = deck.shift();
+        var card3 = deck.shift();
+        // displayPoolsOfBecoming(card1, card2, card3);
     }
 
     // Stairs to Infinity
     else if (card == 80) {
         console.log("stairs to infinity chaos")
+
+        displayStairsToInfinity();
+    }
+}
+
+function displayPoolsOfBecoming(card1, card2, card3) {
+
+
+    // put them on bottom in a chosen order
+    deck.push(card1);
+    deck.push(card2);
+    deck.push(card3);
+}
+
+
+/*
+ * Displays the Stairs to Infinity options
+ */
+function displayStairsToInfinity() {
+
+    var background = document.querySelector(".uniqueFocusPlaneBackground");
+    var focusPlane = document.querySelector(".uniqueFocusPlane");
+    var topbottomContainer = document.querySelector(".top-bottom-container");
+
+    // Set image for focus
+    var imageName;
+    var card = deck.shift();
+    REVEALED_PLANES.push(card);
+
+    // Display top card of deck
+    imageName = "assets/planes/" + card + ".png";
+    focusPlane.getElementsByTagName("img")[0].src = imageName; 
+
+    // Animate fadeIns of plane image and top/bottom options
+    background.style.display = "flex";
+    background.classList.remove("animate-fadeOut");
+    background.classList.add("animate-fadeIn");
+    focusPlane.style.display = "flex";
+    focusPlane.classList.remove("animate-fadeOut");
+    focusPlane.classList.add("animate-fadeIn");
+    topbottomContainer.style.display = "flex";
+    topbottomContainer.classList.remove("animate-fadeOut");
+    topbottomContainer.classList.add("animate-fadeIn");
+}
+
+
+/* 
+ * Removes the Stairs to Infinity options and puts the plane on the top/bottom of the deck
+ */
+function removeStairsToInfinity(top) {
+    var background = document.querySelector(".uniqueFocusPlaneBackground");
+    var focusPlane = document.querySelector(".uniqueFocusPlane");
+    var topbottomContainer = document.querySelector(".top-bottom-container"); 
+  
+    // Fade out plane image and top/bottom options
+    background.classList.remove("animate-fadeIn");
+    background.classList.add("animate-fadeOut");
+    focusPlane.classList.remove("animate-fadeIn");
+    focusPlane.classList.add("animate-fadeOut");
+    topbottomContainer.classList.remove("animate-fadeIn");
+    topbottomContainer.classList.add("animate-fadeOut");
+
+    // Remove from display
+    setTimeout(function() {
+        background.style.display = "none";
+        focusPlane.style.display = "none"; 
+        topbottomContainer.style.display = "none";
+    }, TRANSITION_DURATION);
+
+    // Re-adds the plane to the deck at the top/bottom
+    if (top) {
+        deck.unshift(REVEALED_PLANES.shift());
+    } else {
+        deck.push(REVEALED_PLANES.shift());
     }
 }
 
