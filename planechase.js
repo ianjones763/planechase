@@ -14,6 +14,10 @@ const TRANSITION_DURATION = 1000;               // All animations
 const LOADING_DURATION = 2500;                  // Initial loading gif duration
 const PHENOMENA = [2, 5, 6, 7, 8, 9, 17];       // Keep track of phenomena image indices
 const SPATIAL_MERGING = 6;                      // Keep track of Spatial Merging image index
+const COUNTER_PLANES = [15, 22, 35, 71]         // Planes that need counters
+const CHAOS_PLANES = [62, 80]                   // Planes that have chaos abilities that need to be handled
+const COIN_PLANES = [82]                        // Planes that need coin flips
+
 
 var deck = [];
 var grid = [            // Current plane will be index 4 of the grid, always recenter
@@ -45,6 +49,80 @@ function on_mouseout(cell) {
 
 
 /*
+ * Returns true if on corner of the grid
+ */
+function isDiagonal(indices) {
+    var row = indices[0],
+        col = indices[1];
+    return (row == 0 && col == 0) || (row == 0 && col == 2) || (row == 2 && col == 0) || (row == 2 && col == 2); 
+}
+
+
+/*
+ * Displays the focus plane with the extra display below it (counters)
+ */
+function displayUniquePlanes(indices) {
+
+    var row = indices[0],
+        col = indices[1];
+    var card = grid[row][col];
+
+    // For testing the chaos stuff
+//     var chaosContainer = document.querySelector(".chaos-container");
+//     chaosContainer.style.display = "flex";
+//     chaosContainer.classList.remove("animate-fadeOut");
+//     chaosContainer.classList.add("animate-fadeIn"); 
+//     return;
+
+    if (row == 1 && col == 1) {
+        // Plane needs to display counter
+        if (COUNTER_PLANES.includes(card)) {
+
+            var counterContainer = document.querySelector(".counter-container");
+            counterContainer.style.display = "flex";
+    
+            var counterImg = document.querySelector(".counter-img").getElementsByTagName("img")[0];
+            // Aretopolis --> scroll counters
+            if (card == 15) {
+                counterImg = "assets/game/scroll-counter.svg";
+            }
+            // Kilnspire District --> charge counter
+            else if (card == 22) {
+                counterImg.src = "assets/game/charge-counter.svg"; 
+            }
+            // Mount Keralia --> pressure counter
+            else if (card == 35) {
+                counterImg.src = "assets/game/pressure-counter.svg"; 
+            }
+            // Naar Isle --> flame counter
+            else if (card == 71) {
+                counterImg.src = "assets/game/flame-counter.svg"; 
+            }
+
+            counterContainer.classList.remove("animate-fadeOut");
+            counterContainer.classList.add("animate-fadeIn");
+        }
+
+        // Plane has unique chaos trigger
+        else if (CHAOS_PLANES.includes(card)) {
+            var chaosContainer = document.querySelector(".chaos-container");
+            chaosContainer.style.display = "flex";
+            chaosContainer.classList.remove("animate-fadeOut");
+            chaosContainer.classList.add("animate-fadeIn"); 
+        }
+
+        // Plane has coin flip 
+        else if (COIN_PLANES.includes(card)) {
+            var coinflipContainer = document.querySelector(".coinflip-container");
+            coinflipContainer.style.display = "flex";
+            coinflipContainer.classList.remove("animate-fadeOut");
+            coinflipContainer.classList.add("animate-fadeIn"); 
+        }
+    }
+}
+
+
+/*
  * Shows close-up view of the given plane
  */
 function focusPlane(indices) {
@@ -64,7 +142,6 @@ function focusPlane(indices) {
         planeswalkButton.style.display = "flex";
     }
 
-
     // Set image for focus
     var imageName;
     // Plane is face-up 
@@ -75,6 +152,9 @@ function focusPlane(indices) {
         imageName = "assets/planes/back.png";
     }
     focusPlane.getElementsByTagName("img")[0].src = imageName; 
+
+    // Handle displays for unique planes (counters, etc)
+    displayUniquePlanes(indices);
 
     // Animate fadeIns of clickable background, plane image, and planeswalk button
     background.classList.remove("animate-fadeOut");
@@ -98,6 +178,8 @@ function removeFocusPlane() {
     var background = document.querySelector(".focusPlaneBackground");
     var focusPlane = document.querySelector(".focusPlane");
     var planeswalkButton = document.querySelector(".planeswalkButton");
+    var uniquePlanes = document.querySelectorAll(".uniqueplane");
+    
 
     // Animates fadeOuts of clickable background, plane image, and planeswalk button
     background.classList.remove("animate-fadeIn");
@@ -109,10 +191,18 @@ function removeFocusPlane() {
     planeswalkButton.classList.remove("animate-fadeIn");
     planeswalkButton.classList.add("animate-fadeOut"); 
 
+    uniquePlanes.forEach(function(d) {
+        d.classList.remove("animate-fadeIn");
+        d.classList.add("animate-fadeOut"); 
+    })
+
     setTimeout(function() {
         background.style.display = "none";
         focusPlane.style.display = "none";
         planeswalkButton.style.display = "none";
+        uniquePlanes.forEach(function(d) {
+            d.style.display = "none";
+        })
     }, TRANSITION_DURATION);
 }
 
@@ -134,6 +224,12 @@ function moveToPlane() {
 
     removeFocusPlane();
     fadeOutCards();
+
+    // Reset counters and coin flips (unique planes)
+    var counterDiv = document.getElementById("curr-plane-counter");
+    counterDiv.innerHTML = 0; 
+    var coinDiv = document.getElementById("coinflip-result").getElementsByTagName("img")[0];
+    coinDiv.src = "assets/game/coin-blank.svg";
 
     // Wait till removeFocusPlane() is done
     setTimeout(function() {
@@ -401,6 +497,16 @@ function updateLifeTotal(playerID, amount) {
     lifeDiv.innerHTML = life;
 }
 
+/*
+ * Updates the counter display within focus plane to add a counter 
+ */
+function addCounter() {
+    var counterDiv = document.getElementById("curr-plane-counter");
+    var currCounters = parseInt(counterDiv.innerHTML, 10);
+    currCounters += 1;
+    counterDiv.innerHTML = currCounters;
+}
+
 
 /*
  * Simulates rolling the planar die and updates header display
@@ -412,20 +518,105 @@ function rollDie() {
     if (rand == 1) {
         dieDiv.src = "assets/header/chaos.svg";
     }
-    if (rand >= 2 && rand <= 5) {
+    else if (rand >= 2 && rand <= 5) {
         dieDiv.src = "assets/header/blank.svg";
     }
-    if (rand == 6) {
+    else if (rand == 6) {
         dieDiv.src = "assets/header/planeswalk.svg";
     }
 }
 
 
 /*
- * Returns true if on corner of the grid
+ * Simulates a coin flip and updates focus div to display the result
  */
-function isDiagonal(indices) {
-    var row = indices[0],
-        col = indices[1];
-    return (row == 0 && col == 0) || (row == 0 && col == 2) || (row == 2 && col == 0) || (row == 2 && col == 2); 
+function flipCoin() {
+    var rand = Math.floor(Math.random() * 2) + 1;     // generate random die roll between 1 and 2
+    var coinDiv = document.getElementById("coinflip-result").getElementsByTagName("img")[0];
+
+    if (rand == 1) {
+        coinDiv.src = "assets/game/coin-heads.svg";
+    }
+    if (rand == 2) {
+        coinDiv.src = "assets/game/coin-tails.svg";
+    }
+}
+
+
+/*
+ *
+ */
+function chaosRolled() {
+    var card = grid[1][1];
+
+    // Pools of Becoming
+    if (card == 62) {
+        console.log("pools of becoming chaos")
+    }
+
+    // Stairs to Infinity
+    else if (card == 80) {
+        console.log("stairs to infinity chaos")
+    }
+}
+
+
+/*
+ * Opens the menu to allow user to quit game
+ */
+function openMenu() {
+
+    var background = document.querySelector(".mainmenu-background");
+    background.style.display = "inline";
+    background.classList.remove("animate-fadeOut");
+    background.classList.add("animate-fadeIn"); 
+
+
+    var menuContainer = document.querySelector(".mainmenu-container");
+    menuContainer.style.display = "flex";
+    menuContainer.classList.remove("animate-fadeOut");
+    menuContainer.classList.add("animate-fadeIn"); 
+}
+
+
+/*
+ * Goes back to the main menu if quit == true
+ * Otherwise, returns to the game
+ */
+function quitGame(quit) {
+
+    if (quit) {
+
+        // Fade out entire page
+        document.querySelector("body").classList.add("animate-fadeOut");
+
+        setTimeout(function() {
+            window.location = "index.html"; 
+        }, TRANSITION_DURATION);
+
+    } else {
+
+        var background = document.querySelector(".mainmenu-background");
+        background.classList.remove("animate-fadeOut");
+        background.classList.add("animate-fadeIn"); 
+        
+        var menuContainer = document.querySelector(".mainmenu-container");
+        menuContainer.classList.remove("animate-fadeIn");
+        menuContainer.classList.add("animate-fadeOut"); 
+
+        var yesButton = document.querySelector(".mainmenu-option.yes");
+        var noButton = document.querySelector(".mainmenu-option.no");
+
+        // Get rid of hover animations
+        yesButton.onmouseout = null;
+        yesButton.onmouseover = null;
+        noButton.onmouseout = null;
+        noButton.onmouseover = null;
+
+        // Remove display
+        setTimeout(function() {
+            menuContainer.style.display = "none";
+            background.style.display = "none";
+        }, TRANSITION_DURATION);
+    }
 }

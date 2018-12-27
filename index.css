@@ -18,7 +18,6 @@ html, body {
     height: 70px;
     background-color: black;
     border: 5px solid #927A2E;
-    /* border-bottom: 3px solid #927A2E; */
 }
 
 .title.menu-title {
@@ -33,13 +32,12 @@ html, body {
 }
 
 .header img {
-    height: 60%;
+    height: 42px;
     width: auto; 
 }
 
 .header .game {
     display: none;
-    /* opacity: 0; */
 }
 
 .title.game {
@@ -59,7 +57,7 @@ html, body {
 }
 
 .rollButton {
-    margin-right: 38px;
+    margin-right: 2px;
 }
 
 .lifetotal-container {
@@ -80,7 +78,7 @@ html, body {
     flex-direction: row;
     font-family: "Magic";
     font-size: 2em;
-    margin-left: 16px;
+    margin-left: 2px;
     margin-right: 2px;
     padding: 0 8px;
     padding-top: 7px;
@@ -160,9 +158,9 @@ html, body {
     border-top: none;
     border-left: none;
     border-right: none;
-    /* align-self: flex-end; */
 
     outline: none;
+    font-family: "Magic";
     font-size: .75em;
     text-transform: uppercase;
     text-align: center;
@@ -175,7 +173,6 @@ html, body {
     border-bottom: 3px solid #927A2E;
 
 }
-
 
 .startBackground {
     position: absolute;
@@ -274,6 +271,7 @@ html, body {
     border-radius: 5px;
 }
 
+
 .focusPlane {
     position: absolute;
     width: 65%;
@@ -333,8 +331,151 @@ html, body {
     cursor: pointer;
 }
 
+.counter-container {
+    margin-top: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100px;
+    display: none; 
+}
+
+.counter-img, .plus-img {
+    height: 65px;
+}
+
+.counter-container img {
+    height: 100%;
+    width: auto;
+}
+
+.counter-number {
+    height: 80px;
+    width: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    border-radius: 50%;
+    background-color: white;
+    border: 2px solid #927A2E;
+
+}
+
+#curr-plane-counter {
+    font-size: 3em;
+}
+
+.counter-img img {
+    height: 100%;
+    width: auto;
+}
+
+.chaos-container {
+    display: none;
+}
+
+.chaos-container img {
+    height: 65px;
+}
+
+.coinflip-container {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100px;
+    display: none; 
+}
+
+.coinflip-prompt, #coinflip-result {
+    height: 65px;
+}
+
+.coinflip-prompt {
+    margin-right: 10px;
+}
+
+.coinflip-container img {
+    height: 100%;
+    width: auto;
+}
 
 
+.mainmenu-background {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    margin: auto auto;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+
+    background-color: rgba(39, 39, 39, 0.8);
+    display: none; 
+}
+
+.mainmenu-background:hover {
+    cursor: pointer;
+}
+
+.mainmenu-container {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    width: 35%;
+    height: 30%;
+    margin: auto auto;
+    left: 0;
+    right: 0;
+    top: 30px;
+    bottom: 0;
+
+    justify-content: space-between;
+    align-items: center;
+    background-color: white;
+    border: 5px solid #927A2E;
+    border-radius: 10px;
+
+    display: none;
+}
+
+.mainmenu-prompt {
+    font-size: 2.5em;
+    color: #927A2E;
+    margin: 30px 0;
+    text-align: center;
+}
+
+.mainmenu-option {
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+    width: 100px;
+
+    
+    background-color: black;
+    border: 2px solid #927A2E;
+    border-radius: 10px;
+}
+
+.mainmenu-option:hover {
+    cursor: pointer;
+}
+
+.mainmenu-option.no {
+    margin-bottom: 10px;
+}
+
+.mainmenu-option div {
+    padding: 20px;
+    padding-top: 25px;
+
+    color: white;
+    font-size: 2em;
+}
 
 
 

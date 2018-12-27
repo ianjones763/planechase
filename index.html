@@ -11,12 +11,14 @@
     <div class="header">
 
         <!-- Logo during menu -->
-        <div class="title menu-title">
+        <div class="title menu-title animate-fadeIn">
             <img src="assets/header/logo.svg">
         </div>
 
         <!-- Logo during gameplay -->
-        <div class="title game">
+        <div class="title game" onmouseover="on_mouseover(this)"
+                                onclick="openMenu()"
+                                onmouseout="on_mouseout(this)">
             <img src="assets/header/logo.svg">
         </div>
 
@@ -203,17 +205,58 @@
     <div class="focusPlane">
         <img src="">
 
+        <!-- Planeswalk -->
         <div class="planeswalkButton" onmouseover="on_mouseover(this)"
-                                    onclick="moveToPlane()"
-                                    onmouseout="on_mouseout(this)">
+                                      onclick="moveToPlane()"
+                                      onmouseout="on_mouseout(this)">
             <img src="assets/game/planeswalklabel.svg">
         </div>
+
+        <!-- Counters -->
+        <div class="counter-container uniqueplane">
+            <div class="counter-img">
+                <img src="assets/game/scroll-counter.svg">
+            </div>
+
+            <div class="counter-number">
+                <div id="curr-plane-counter">
+                    0
+                </div>
+            </div>
+            <div class="plus-img" onmouseover="on_mouseover(this)"
+                                  onclick="addCounter()"
+                                  onmouseout="on_mouseout(this)">
+                <img src="assets/game/plus.svg">
+            </div>
+        </div>
+
+        <!-- Chaos -->
+        <div class="chaos-container uniqueplane" onmouseover="on_mouseover(this)"
+                                     onclick="chaosRolled()"
+                                     onmouseout="on_mouseout(this)">
+            <img src="assets/game/chaos.svg">
+        </div>
+
+        <!-- Coin flip -->
+        <div class="coinflip-container uniqueplane">
+            <div class="coinflip-prompt" onmouseover="on_mouseover(this)"
+                                         onclick="flipCoin()"
+                                         onmouseout="on_mouseout(this)">
+                <img src="assets/game/coin-prompt.svg">
+            </div>
+
+            <div id="coinflip-result">
+                <img src="assets/game/coin-blank.svg">
+            </div>
+        </div>
+
+
     </div>
 
 
     <!-- Start container -->
     <div class="startBackground"></div>
-    <div class="startContainer">
+    <div class="startContainer animate-fadeIn">
         <div class="playerNamesContainer">
 
             <div class="playerNamesPrompt">
@@ -263,6 +306,27 @@
         <img src="assets/start/loading.gif">
     </div>
 
+    <!-- Main menu -->
+    <div class="mainmenu-background" onclick="quitGame(false)"></div>
+    <div class="mainmenu-container">
+        <div class="mainmenu-prompt">
+            Are you sure you want to quit?
+        </div>
+        <div class="mainmenu-option yes" onmouseover="on_mouseover(this)"
+                                         onclick="quitGame(true)"
+                                         onmouseout="on_mouseout(this)">
+            <div>
+                YES 
+            </div>
+        </div>
+        <div class="mainmenu-option no" onmouseover="on_mouseover(this)"
+                                        onclick="quitGame(false)"
+                                        onmouseout="on_mouseout(this)">
+            <div>
+                NO
+            </div>
+        </div>
+    </div>
 
 </body>
 </html>
