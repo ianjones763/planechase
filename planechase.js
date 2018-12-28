@@ -10,23 +10,24 @@ const MAX_PLAYERS = 5;
 const NUM_PLANES = 85;
 const NUM_ROWS = 3;
 const NUM_COLS = 3;
-const TRANSITION_DURATION = 1000;               // All animations
-const LOADING_DURATION = 2500;                  // Initial loading gif duration
-const PHENOMENA = [9, 27, 40, 43, 53, 58, 65, 81];       // Keep track of phenomena image indices
-const SPATIAL_MERGING = 6;                      // Keep track of Spatial Merging image index
-const COUNTER_PLANES = [3, 33, 41, 44]          // Planes that need counters
-const CHAOS_PLANES = [54, 66]                   // Planes that have chaos abilities that need to be handled
-const COIN_PLANES = [39]                        // Planes that need coin flips
-const REVEALED_PLANES = []                      // Keep track of currently revealed planes
+const TRANSITION_DURATION = 1000;                   // All animations
+const LOADING_DURATION = 2500;                      // Initial loading gif duration
+const PHENOMENA = [9, 27, 40, 43, 53, 58, 65, 81];  // Keep track of phenomena image indices
+const SPATIAL_MERGING = 6;                          // Keep track of Spatial Merging image index
+const COUNTER_PLANES = [3, 33, 41, 44]              // Planes that need counters
+const CHAOS_PLANES = [54, 66]                       // Planes that have chaos abilities that need to be handled
+const COIN_PLANES = [39]                            // Planes that need coin flips
+const REVEALED_PLANES = []                          // Keep track of currently revealed planes
 
 
-var deck = [];
+var deck = [];        
 var grid = [            // Current plane will be index 4 of the grid, always recenter
     [-1, -1, -1],
     [-1, -1, -1],
     [-1, -1, -1]
 ];
 var currFocus;          // Current zoomed in card
+var emptyCells = [];    // Cells in grid that need to be filled
 
 
 
@@ -197,7 +198,6 @@ function removeFocusPlane() {
     var planeswalkButton = document.querySelector(".planeswalkButton");
     var uniquePlanes = document.querySelectorAll(".uniqueplane");
     
-
     // Animates fadeOuts of clickable background, plane image, and planeswalk button
     background.classList.remove("animate-fadeIn");
     background.classList.add("animate-fadeOut");
@@ -274,26 +274,26 @@ function moveToPlane() {
             }
         }
 
+        grid = temp;
+        emptyCells = [];
+        emptyCells.push([1, 1]);
+
         // Get new cards from deck
         if (temp[0][1] == -1){
-            temp[0][1] = drawCard();
+            emptyCells.push([0, 1]);
         }
         if (temp[1][0] == -1){
-            temp[1][0] = drawCard();
-        }
-        if (temp[1][1] == -1){
-            temp[1][1] = drawCard(); 
+            emptyCells.push([1, 0]);
         }
         if (temp[1][2] == -1){
-            temp[1][2] = drawCard(); 
+            emptyCells.push([1, 2]);
         }
         if (temp[2][1] == -1){
-            temp[2][1] = drawCard(); 
+            emptyCells.push([2, 1]);
         }
-        
-        // redraw board    
-        grid = temp;
-        renderBoard(false, true);
+
+        drawCard(false);
+  
     }, TRANSITION_DURATION);
 }
 
@@ -303,8 +303,7 @@ function moveToPlane() {
  * @Params: 
  * wait -- true if rendering should wait for images to load longer (initial game setup)
  */
-function renderBoard(wait, focus) {
-    var duration = wait ? LOADING_DURATION : 50;
+function renderBoard() {
     var startBackground = document.querySelector(".startBackground");
     startBackground.style.display = "inline"; 
 
@@ -344,12 +343,12 @@ function renderBoard(wait, focus) {
 
         startBackground.style.display = "none";
 
-        if (focus) {
-            setTimeout(function() {
-                focusPlane([1, 1]);
-            }, TRANSITION_DURATION);
-        }
-    }, duration);
+        // Automatically show close-up of card
+        setTimeout(function() {
+            focusPlane([1, 1]);
+        }, TRANSITION_DURATION);
+        
+    }, 50);
 }
 
 
@@ -379,7 +378,6 @@ function setUpGame() {
         d.classList.add("animate-fadeIn")
     })
 
-
     // Wait for buttons to disappear before prompting for player names
     setTimeout(function() {
         startButton.style.display = "none";
@@ -387,7 +385,7 @@ function setUpGame() {
         menuTitle.style.display = "none";
 
         // Get player names before rendering the board
-        dealCards()
+        dealCards();
 
     }, TRANSITION_DURATION);
 }
@@ -420,6 +418,7 @@ function setupLifeTotals() {
  * Animates the fadeOut of all the cards and then restarts the game
  */
 function restartGame() {
+
     removeFocusPlane();
     fadeOutCards();
 
@@ -455,17 +454,22 @@ function dealCards() {
 
     // Gets first 5 cards from the deck and draws them
     function playInitialCards(deck) {
-        grid[0][1] = drawCard();
-        grid[1][0] = drawCard();
-        grid[1][1] = drawCard();
-        grid[1][2] = drawCard();
-        grid[2][1] = drawCard();
+        emptyCells = [
+            [0, 1], 
+            [1, 0], 
+            [1, 1], 
+            [1, 2], 
+            [2, 1]
+        ];
 
-        renderBoard(true, false); 
+        drawCard(false);
     }
 
-    deck = shuffle(deck);
-    playInitialCards(deck);
+    // Allow loading animation to give illusion of shuffling deck
+    setTimeout(function() {
+        deck = shuffle(deck);
+        playInitialCards(deck); 
+    }, LOADING_DURATION);
 }
 
 
@@ -473,18 +477,90 @@ function dealCards() {
  * Simulates drawing a card from the planar deck
  * Handles encountering phenomena
  */
-function drawCard() {
+function drawCard(removePhenomena) {
+    if (removePhenomena) {
+        var fullBackground = document.querySelector(".full-background");
+        var focusPlane = document.querySelector(".focusPlane");
+        var okButton = document.querySelector(".okButton");
+        
+        focusPlane.classList.remove("animate-fadeIn");
+        focusPlane.classList.add("animate-fadeOut");
 
-    var card = deck.shift();
-    console.log(card);
-    if (PHENOMENA.includes(card)) {
-        console.log("HERE");
+        fullBackground.classList.remove("animate-fadeIn");
+        fullBackground.classList.add("animate-fadeOut");
+    
+        okButton.classList.remove("animate-fadeIn");
+        okButton.classList.add("animate-fadeOut");
 
-
-
+        setTimeout(function() {
+            focusPlane.style.display = "none";
+            fullBackground.style.display = "none";
+            okButton.style.display = "none";
+        }, TRANSITION_DURATION)
     }
 
-    return card;
+    // Render board when no more cards to draw
+    if (emptyCells.length == 0) {
+        renderBoard();
+        return;
+    }
+
+    // Draw a card to populate empty cell
+    var card = deck.shift();
+
+    // If phenomena, handle that 
+    if (PHENOMENA.includes(card)) {
+        showPhenomenon(card);
+
+
+    // Regular plane, fill grid slot and recurse if needed
+    } else {
+        var indices = emptyCells.shift();
+        grid[indices[0]][indices[1]] = card;
+        
+        // Recurse
+        drawCard(removePhenomena);
+    }
+}
+
+
+/*
+ * Displays the phenomenon card in the center of the display
+ * Only allows for the user to click out by clicking OK button
+ */ 
+function showPhenomenon(card) {
+
+    // var background = document.querySelector(".focusPlaneBackground");
+    var focusPlane = document.querySelector(".focusPlane");
+    var okButton = document.querySelector(".okButton");
+    var loadingGif = document.querySelector(".loading-gif");
+    var fullBackground = document.querySelector(".full-background");
+
+    // background.style.display = "inline";
+    fullBackground.style.display = "inline";
+    focusPlane.style.display = "flex"; 
+    okButton.style.display = "flex";
+
+    // Set image for focus
+    var imageName = "assets/planes/" + card + ".png";
+    focusPlane.getElementsByTagName("img")[0].src = imageName; 
+
+    // Animate fadeIns of clickable background, phenomenon image, and OK button
+    fullBackground.classList.remove("animate-fadeOut");
+    fullBackground.classList.add("animate-fadeIn");
+
+    focusPlane.classList.remove("animate-fadeOut");
+    focusPlane.classList.add("animate-fadeIn");
+
+    okButton.classList.remove("animate-fadeOut");
+    okButton.classList.add("animate-fadeIn");
+
+    loadingGif.classList.remove("animate-fadeIn");
+    loadingGif.classList.add("animate-fadeOut");
+
+    setTimeout(function() {
+        loadingGif.style.display = "none";
+    }, TRANSITION_DURATION)
 }
 
 
@@ -494,8 +570,6 @@ function drawCard() {
  */
 function fadeOutCards() {
     var cells = document.querySelectorAll(".cell");
-    var startBackground = document.querySelector(".startBackground");
-    startBackground.style.display = "inline";
 
     cells.forEach(function(d) {
         d.classList.remove("animate-fadeIn");
@@ -590,8 +664,8 @@ function chaosRolled() {
     }
 }
 
-function displayPoolsOfBecoming(card1, card2, card3) {
 
+function displayPoolsOfBecoming(card1, card2, card3) {
 
     // put them on bottom in a chosen order
     deck.push(card1);
@@ -666,7 +740,19 @@ function removeStairsToInfinity(top) {
 /*
  * Opens the menu to allow user to quit game
  */
-function openMenu() {
+function openMenu(action) {
+
+    var prompt = document.querySelector(".mainmenu-prompt");
+    var yes = document.querySelector(".mainmenu-option.yes");
+
+    if (action == "restart") {
+        prompt.innerHTML = "Are you sure you want to restart?";
+        yes.setAttribute("onclick", "quitGame(false)");
+
+    } else if (action == "quit") {
+        prompt.innerHTML = "Are you sure you want to quit?"; 
+        yes.setAttribute("onclick", "quitGame(true)");
+    }
 
     var background = document.querySelector(".mainmenu-background");
     background.style.display = "inline";
@@ -687,6 +773,7 @@ function openMenu() {
  */
 function quitGame(quit) {
 
+    // Quit game
     if (quit) {
 
         // Fade out entire page
@@ -696,29 +783,45 @@ function quitGame(quit) {
             window.location = "index.html"; 
         }, TRANSITION_DURATION);
 
+    // Restart game
     } else {
 
-        var background = document.querySelector(".mainmenu-background");
-        background.classList.remove("animate-fadeOut");
-        background.classList.add("animate-fadeIn"); 
-        
-        var menuContainer = document.querySelector(".mainmenu-container");
-        menuContainer.classList.remove("animate-fadeIn");
-        menuContainer.classList.add("animate-fadeOut"); 
-
-        var yesButton = document.querySelector(".mainmenu-option.yes");
-        var noButton = document.querySelector(".mainmenu-option.no");
-
-        // Get rid of hover animations
-        yesButton.onmouseout = null;
-        yesButton.onmouseover = null;
-        noButton.onmouseout = null;
-        noButton.onmouseover = null;
-
-        // Remove display
+        removeFocusPlane();
+        fadeOutCards();
+        removeMainMenu();
+        document.querySelector(".full-background").style.display = "inline";
+    
         setTimeout(function() {
-            menuContainer.style.display = "none";
-            background.style.display = "none";
-        }, TRANSITION_DURATION);
+            dealCards();
+        }, TRANSITION_DURATION)
     }
+}
+
+
+/*
+ * Removes main menu from the display
+ */
+function removeMainMenu() {
+    var background = document.querySelector(".mainmenu-background");
+    background.classList.remove("animate-fadeOut");
+    background.classList.add("animate-fadeIn"); 
+    
+    var menuContainer = document.querySelector(".mainmenu-container");
+    menuContainer.classList.remove("animate-fadeIn");
+    menuContainer.classList.add("animate-fadeOut"); 
+
+    var yesButton = document.querySelector(".mainmenu-option.yes");
+    var noButton = document.querySelector(".mainmenu-option.no");
+
+    // Get rid of hover animations
+    yesButton.onmouseout = null;
+    yesButton.onmouseover = null;
+    noButton.onmouseout = null;
+    noButton.onmouseover = null;
+
+    // Remove display
+    setTimeout(function() {
+        menuContainer.style.display = "none";
+        background.style.display = "none";
+    }, TRANSITION_DURATION); 
 }

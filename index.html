@@ -17,7 +17,7 @@
 
         <!-- Logo during gameplay -->
         <div class="title game" onmouseover="on_mouseover(this)"
-                                onclick="openMenu()"
+                                onclick="openMenu('quit')"
                                 onmouseout="on_mouseout(this)"
                                 onmousedown="on_mousedown(this)"
                                 onmouseup="on_mouseup(this)">
@@ -155,7 +155,7 @@
 
         <!-- Restart button -->
         <div class="restartButton game" onmouseover="on_mouseover(this)"
-                                        onclick="restartGame()"
+                                        onclick="openMenu('restart')"
                                         onmouseout="on_mouseout(this)"
                                         onmousedown="on_mousedown(this)"
                                         onmouseup="on_mouseup(this)">
@@ -225,6 +225,63 @@
     </div>
 
 
+    <!-- Start container -->
+    <div class="startBackground"></div>
+    <div class="startContainer animate-fadeIn">
+        <div class="playerNamesContainer">
+
+            <div class="playerNamesPrompt">
+                Enter players' initials:
+            </div>
+
+            <div class="player-nameentry-container">
+
+                <div class="player-container-prompts">
+                    <div class="playerLabel">
+                        Player 1:
+                    </div>
+                    <div class="playerLabel">
+                        Player 2: 
+                    </div>
+                    <div class="playerLabel">
+                        Player 3: 
+                    </div>
+                    <div class="playerLabel">
+                        Player 4: 
+                    </div>
+                    <div class="playerLabel">
+                        Player 5: 
+                    </div>
+                </div>
+
+                <div class="player-container-responses">
+                    <input id="player1field" type="text" maxlength="2"> 
+                    <input id="player2field" type="text" maxlength="2">
+                    <input id="player3field" type="text" maxlength="2">
+                    <input id="player4field" type="text" maxlength="2">
+                    <input id="player5field" type="text" maxlength="2">
+                </div>
+
+            </div>
+
+            <div class="startButton" onmouseover="on_mouseover(this)"
+                                    onclick="setUpGame()"
+                                    onmouseout="on_mouseout(this)"
+                                    onmousedown="on_mousedown(this)"
+                                    onmouseup="on_mouseup(this)">
+                <img src="assets/start/start.svg">
+            </div> 
+        </div>
+    </div>
+
+    <div class="full-background"></div>
+
+    <!-- Loading gif -->
+    <div class="loading-gif">
+        <img src="assets/start/loading.gif">
+    </div>
+
+
     <!-- Focus Plane, Planeswalk button, custom buttons -->
     <div class="focusPlaneBackground" onclick="removeFocusPlane()"></div>
 
@@ -238,6 +295,15 @@
                                       onmousedown="on_mousedown(this)"
                                       onmouseup="on_mouseup(this)">
             <img src="assets/game/planeswalklabel.svg">
+        </div>
+
+        <!-- Phenomena: ok button -->
+        <div class="okButton" onmouseover="on_mouseover(this)"
+                              onclick="drawCard(true, true)"
+                              onmouseout="on_mouseout(this)"
+                              onmousedown="on_mousedown(this)"
+                              onmouseup="on_mouseup(this)">
+            <img src="assets/game/ok.svg">
         </div>
 
         <!-- Counters -->
@@ -310,62 +376,8 @@
     </div>
 
 
-    <!-- Start container -->
-    <div class="startBackground"></div>
-    <div class="startContainer animate-fadeIn">
-        <div class="playerNamesContainer">
-
-            <div class="playerNamesPrompt">
-                Enter players' initials:
-            </div>
-
-            <div class="player-nameentry-container">
-
-                <div class="player-container-prompts">
-                    <div class="playerLabel">
-                        Player 1:
-                    </div>
-                    <div class="playerLabel">
-                        Player 2: 
-                    </div>
-                    <div class="playerLabel">
-                        Player 3: 
-                    </div>
-                    <div class="playerLabel">
-                        Player 4: 
-                    </div>
-                    <div class="playerLabel">
-                        Player 5: 
-                    </div>
-                </div>
-
-                <div class="player-container-responses">
-                    <input id="player1field" type="text" maxlength="2"> 
-                    <input id="player2field" type="text" maxlength="2">
-                    <input id="player3field" type="text" maxlength="2">
-                    <input id="player4field" type="text" maxlength="2">
-                    <input id="player5field" type="text" maxlength="2">
-                </div>
-
-            </div>
-
-        <div class="startButton" onmouseover="on_mouseover(this)"
-                                 onclick="setUpGame()"
-                                 onmouseout="on_mouseout(this)"
-                                 onmousedown="on_mousedown(this)"
-                                 onmouseup="on_mouseup(this)">
-            <img src="assets/start/start.svg">
-        </div> 
-    </div>
-    </div>
-
-    <!-- Loading gif -->
-    <div class="loading-gif">
-        <img src="assets/start/loading.gif">
-    </div>
-
     <!-- Main menu -->
-    <div class="mainmenu-background" onclick="quitGame(false)"></div>
+    <div class="mainmenu-background" onclick="removeMainMenu()"></div>
     <div class="mainmenu-container">
         <div class="mainmenu-prompt">
             Are you sure you want to quit?
@@ -380,7 +392,7 @@
             </div>
         </div>
         <div class="mainmenu-option no" onmouseover="on_mouseover(this)"
-                                        onclick="quitGame(false)"
+                                        onclick="removeMainMenu()"
                                         onmouseout="on_mouseout(this)"
                                         onmousedown="on_mousedown(this)"
                                         onmouseup="on_mouseup(this)">
