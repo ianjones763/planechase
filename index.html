@@ -286,7 +286,7 @@
     <div class="focusPlaneBackground" onclick="removeFocusPlane()"></div>
 
     <div class="focusPlane">
-        <img src="">
+        <img class="focusPlaneImage" src="">
 
         <!-- Planeswalk -->
         <div class="planeswalkButton" onmouseover="on_mouseover(this)"
@@ -299,7 +299,7 @@
 
         <!-- Phenomena: ok button -->
         <div class="okButton" onmouseover="on_mouseover(this)"
-                              onclick="drawCard(true, true)"
+                              onclick="drawCard(true)"
                               onmouseout="on_mouseout(this)"
                               onmousedown="on_mousedown(this)"
                               onmouseup="on_mouseup(this)">
@@ -355,7 +355,7 @@
     <!-- Stairs to infinity -->
     <div class="uniqueFocusPlaneBackground"></div>
     <div class="uniqueFocusPlane">
-        <img src="">
+        <img class="uniqueFocusPlaneImage" src="">
         <div class="top-bottom-container">
             <div class="top-button" onmouseover="on_mouseover(this)"
                                     onclick="removeStairsToInfinity(true)"
@@ -373,7 +373,24 @@
                 <img src="assets/game/bottom.svg">
             </div>
         </div>
+
+        <div class="poolsOfBecomingOKButton" onmouseover="on_mouseover(this)"
+                                             onclick="displayPoolsOfBecoming()"
+                                             onmouseout="on_mouseout(this)"
+                                             onmousedown="on_mousedown(this)"
+                                             onmouseup="on_mouseup(this)">
+            <img src="assets/game/ok.svg">
+        </div>
+
+        
     </div>
+
+
+    <!-- Pools of becoming -->
+    <!-- <div class="poolsOfBecomingFocusPlane">
+        <div class=""></div>
+
+    </div> -->
 
 
     <!-- Main menu -->

@@ -85,13 +85,6 @@ function displayUniquePlanes(indices) {
         col = indices[1];
     var card = grid[row][col];
 
-    // For testing the chaos stuff
-    // var chaosContainer = document.querySelector(".chaos-container");
-    // chaosContainer.style.display = "flex";
-    // chaosContainer.classList.remove("animate-fadeOut");
-    // chaosContainer.classList.add("animate-fadeIn"); 
-    // return;
-
     if (row == 1 && col == 1) {
         // Plane needs to display counter
         if (COUNTER_PLANES.includes(card)) {
@@ -228,16 +221,6 @@ function removeFocusPlane() {
  * Gets new cards from the deck and shifts the grid to keep centered
  */
 function moveToPlane() {
-    var row = currFocus[0];
-    var col = currFocus[1];
-
-    // Can't walk to the current plane
-    if (row == 1 && col == 1) return;
-
-    // Can't walk diagonally to a face-up plane
-    if((row == 0 && col == 0) || (row == 0 && col == 2) || (row == 2 && col == 0) || (row == 2 && col == 2)) {
-        if (grid[row][col] != -1) return;
-    }
 
     removeFocusPlane();
     fadeOutCards();
@@ -276,9 +259,11 @@ function moveToPlane() {
 
         grid = temp;
         emptyCells = [];
-        emptyCells.push([1, 1]);
 
         // Get new cards from deck
+        if (temp[1][1] == -1) {
+            emptyCells.push([1, 1]);
+        }
         if (temp[0][1] == -1){
             emptyCells.push([0, 1]);
         }
@@ -512,7 +497,6 @@ function drawCard(removePhenomena) {
     if (PHENOMENA.includes(card)) {
         showPhenomenon(card);
 
-
     // Regular plane, fill grid slot and recurse if needed
     } else {
         var indices = emptyCells.shift();
@@ -585,7 +569,13 @@ function updateLifeTotal(playerID, amount) {
     var lifeDiv = document.getElementById(playerID).getElementsByClassName("playerName")[0].getElementsByClassName("life")[0];
     var life = parseInt(lifeDiv.innerHTML, 10);
     life += amount;
-    lifeDiv.innerHTML = life;
+
+    // Animate change
+    lifeDiv.style.opacity = 0;
+    setTimeout(function() {
+        lifeDiv.innerHTML = life;
+        lifeDiv.style.opacity = 1;
+    })
 }
 
 /*
@@ -595,7 +585,13 @@ function addCounter() {
     var counterDiv = document.getElementById("curr-plane-counter");
     var currCounters = parseInt(counterDiv.innerHTML, 10);
     currCounters += 1;
-    counterDiv.innerHTML = currCounters;
+
+    // Animate change
+    counterDiv.style.opacity = 0;
+    setTimeout(function() {
+        counterDiv.innerHTML = currCounters;
+        counterDiv.style.opacity = 1;
+    }, 100);
 }
 
 
@@ -605,16 +601,21 @@ function addCounter() {
 function rollDie() {
     var rand = Math.floor(Math.random() * 6) + 1;     // generate random die roll between 1 and 6
     var dieDiv = document.getElementById("planardie");
-
-    if (rand == 1) {
-        dieDiv.src = "assets/header/chaos.svg";
-    }
-    else if (rand >= 2 && rand <= 5) {
-        dieDiv.src = "assets/header/blank.svg";
-    }
-    else if (rand == 6) {
-        dieDiv.src = "assets/header/planeswalk.svg";
-    }
+    
+    // Animate change
+    dieDiv.style.opacity = 0;
+    setTimeout(function() {
+        if (rand == 1) {
+            dieDiv.src = "assets/header/chaos.svg";
+        }
+        else if (rand >= 2 && rand <= 5) {
+            dieDiv.src = "assets/header/blank.svg";
+        }
+        else if (rand == 6) {
+            dieDiv.src = "assets/header/planeswalk.svg";
+        }
+        dieDiv.style.opacity = 1; 
+    }, 100);
 }
 
 
@@ -624,13 +625,18 @@ function rollDie() {
 function flipCoin() {
     var rand = Math.floor(Math.random() * 2) + 1;     // generate random die roll between 1 and 2
     var coinDiv = document.getElementById("coinflip-result").getElementsByTagName("img")[0];
-
-    if (rand == 1) {
-        coinDiv.src = "assets/game/coin-heads.svg";
-    }
-    if (rand == 2) {
-        coinDiv.src = "assets/game/coin-tails.svg";
-    }
+    
+    // Animate change
+    coinDiv.style.opacity = 0;
+    setTimeout(function() {
+        if (rand == 1) {
+            coinDiv.src = "assets/game/coin-heads.svg";
+        }
+        if (rand == 2) {
+            coinDiv.src = "assets/game/coin-tails.svg";
+        }
+        coinDiv.style.opacity = 1; 
+    }, 100);
 }
 
 
@@ -647,30 +653,99 @@ function chaosRolled() {
     var card = grid[1][1];
 
     // Pools of Becoming
-    if (card == 62) {
-        console.log("pools of becoming chaos")
+    // if (card == 62) {
+    if (true) {
+        REVEALED_PLANES.push(deck.shift());
+        REVEALED_PLANES.push(deck.shift());
+        REVEALED_PLANES.push(deck.shift());
 
-        var card1 = deck.shift();
-        var card2 = deck.shift();
-        var card3 = deck.shift();
-        // displayPoolsOfBecoming(card1, card2, card3);
+        displayPoolsOfBecoming();
     }
 
     // Stairs to Infinity
     else if (card == 80) {
-        console.log("stairs to infinity chaos")
-
         displayStairsToInfinity();
     }
 }
 
 
-function displayPoolsOfBecoming(card1, card2, card3) {
+/*
+ * Allows user to click through the top 3 cards of the planar deck and trigger chaos abilities of those
+ */
+function displayPoolsOfBecoming() {
 
-    // put them on bottom in a chosen order
-    deck.push(card1);
-    deck.push(card2);
-    deck.push(card3);
+    var background = document.querySelector(".uniqueFocusPlaneBackground");
+    var focusPlane = document.querySelector(".uniqueFocusPlane");
+    var okButton = document.querySelector(".poolsOfBecomingOKButton");
+
+    // Fade in first plane
+    if (REVEALED_PLANES.length == 3) {
+
+        // Set image for focus
+        var imageName;
+        var card = REVEALED_PLANES.shift();
+        deck.push(card);    // Put back on bottom
+
+        // Display top card of deck
+        imageName = "assets/planes/" + card + ".png";
+        document.querySelector(".uniqueFocusPlaneImage").src = imageName; 
+
+        // Animate fadeIns of plane image and top/bottom options
+        background.style.display = "flex";
+        background.classList.remove("animate-fadeOut");
+        background.classList.add("animate-fadeIn");
+        focusPlane.style.display = "flex";
+        focusPlane.classList.remove("animate-fadeOut");
+        focusPlane.classList.add("animate-fadeIn");
+        okButton.style.display = "flex";
+        okButton.classList.remove("animate-fadeOut");
+        okButton.classList.add("animate-fadeIn");
+    }
+
+    // Have to fade out past plane before fading in current plane (2nd and 3rd planes)
+    else if (REVEALED_PLANES.length > 0) {
+
+        // Fade them out
+        focusPlane.classList.remove("animate-fadeIn");
+        focusPlane.classList.add("animate-fadeOut");
+        okButton.classList.remove("animate-fadeIn");
+        okButton.classList.add("animate-fadeOut"); 
+
+        // Fade in new plane
+        setTimeout(function() {
+            // Set image for focus
+            var imageName;
+            var card = REVEALED_PLANES.shift();
+            deck.push(card);    // Put back on bottom
+
+            // Display top card of deck
+            imageName = "assets/planes/" + card + ".png";
+            document.querySelector(".uniqueFocusPlaneImage").src = imageName; 
+        
+            // Animate fadeIns of plane image and ok button
+            focusPlane.classList.remove("animate-fadeOut");
+            focusPlane.classList.add("animate-fadeIn");
+            okButton.classList.remove("animate-fadeOut");
+            okButton.classList.add("animate-fadeIn");
+        }, TRANSITION_DURATION);
+
+    // Fade out final plane
+    } else {
+        
+        background.classList.remove("animate-fadeIn");
+        background.classList.add("animate-fadeOut");
+        focusPlane.classList.remove("animate-fadeIn");
+        focusPlane.classList.add("animate-fadeOut");
+        okButton.classList.remove("animate-fadeIn");
+        okButton.classList.add("animate-fadeOut");  
+
+        setTimeout(function() {
+            background.style.display = "none";
+            focusPlane.style.display = "none";
+            okButton.style.display = "none";
+
+        }, TRANSITION_DURATION);
+    }
 }
 
 
@@ -690,7 +765,7 @@ function displayStairsToInfinity() {
 
     // Display top card of deck
     imageName = "assets/planes/" + card + ".png";
-    focusPlane.getElementsByTagName("img")[0].src = imageName; 
+    document.querySelector(".uniqueFocusPlaneImage").src = imageName; 
 
     // Animate fadeIns of plane image and top/bottom options
     background.style.display = "flex";
