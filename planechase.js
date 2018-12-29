@@ -30,7 +30,6 @@ var currFocus;          // Current zoomed in card
 var emptyCells = [];    // Cells in grid that need to be filled
 
 
-
 /*
  * Highlight element
  */
@@ -221,9 +220,9 @@ function removeFocusPlane() {
  * Gets new cards from the deck and shifts the grid to keep centered
  */
 function moveToPlane() {
-
     removeFocusPlane();
     fadeOutCards();
+    document.querySelector(".startBackground").style.display = "inline";
 
     // Reset counters and coin flips (unique planes)
     var counterDiv = document.getElementById("curr-plane-counter");
@@ -313,7 +312,7 @@ function renderBoard() {
     var cells = document.querySelectorAll(".cell");
     var loadingGif = document.querySelector(".loading-gif");
 
-    // Wait for images to load, then fade them in and remove loading gif
+    // Wait for images to load, then fade them in and remove loading gif and background
     setTimeout(function() {
         loadingGif.classList.remove("animate-fadeIn");
         loadingGif.classList.add("animate-fadeOut");
@@ -400,26 +399,16 @@ function setupLifeTotals() {
 
 
 /*
- * Animates the fadeOut of all the cards and then restarts the game
- */
-function restartGame() {
-
-    removeFocusPlane();
-    fadeOutCards();
-
-    setTimeout(function() {
-        dealCards();
-    }, TRANSITION_DURATION)
-}
-
-
-/*
  * Sets up the game with the 5 starting planes in a cross 
  */
 function dealCards() {
     var loadingGif = document.querySelector(".loading-gif");
     loadingGif.style.display = "inline";
     loadingGif.classList.add("animate-fadeIn");
+
+    var startBackground = document.querySelector(".startBackground");
+    startBackground.style.display = "inline";
+    startBackground.classList.add("animate-fadeIn"); 
 
     for (var i = 0; i < NUM_PLANES; i++) {
         deck[i] = i;
@@ -457,7 +446,6 @@ function dealCards() {
     }, LOADING_DURATION);
 }
 
-
 /*
  * Simulates drawing a card from the planar deck
  * Handles encountering phenomena
@@ -486,6 +474,7 @@ function drawCard(removePhenomena) {
 
     // Render board when no more cards to draw
     if (emptyCells.length == 0) {
+
         renderBoard();
         return;
     }
@@ -495,7 +484,13 @@ function drawCard(removePhenomena) {
 
     // If phenomena, handle that 
     if (PHENOMENA.includes(card)) {
-        showPhenomenon(card);
+        if (showPhenomenon) {
+            setTimeout(function() {
+                showPhenomenon(card);
+            }, TRANSITION_DURATION)
+        } else {
+            showPhenomenon(card);
+        }
 
     // Regular plane, fill grid slot and recurse if needed
     } else {
@@ -864,7 +859,6 @@ function quitGame(quit) {
         removeFocusPlane();
         fadeOutCards();
         removeMainMenu();
-        document.querySelector(".full-background").style.display = "inline";
     
         setTimeout(function() {
             dealCards();
