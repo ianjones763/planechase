@@ -648,8 +648,7 @@ function chaosRolled() {
     var card = grid[1][1];
 
     // Pools of Becoming
-    // if (card == 62) {
-    if (true) {
+    if (card == 62) {
         REVEALED_PLANES.push(deck.shift());
         REVEALED_PLANES.push(deck.shift());
         REVEALED_PLANES.push(deck.shift());
@@ -859,6 +858,19 @@ function quitGame(quit) {
         removeFocusPlane();
         fadeOutCards();
         removeMainMenu();
+
+        // Reset life totals
+        var lifeTotals = document.querySelectorAll(".life");
+        lifeTotals.forEach(function(d) {
+            d.innerHTML = 20;
+        })
+
+        // Reset grid
+        grid = [
+            [-1, -1, -1],
+            [-1, -1, -1],
+            [-1, -1, -1]
+        ];
     
         setTimeout(function() {
             dealCards();
