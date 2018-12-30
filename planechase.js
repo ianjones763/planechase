@@ -13,11 +13,15 @@ const NUM_COLS = 3;
 const TRANSITION_DURATION = 1000;                   // All animations
 const LOADING_DURATION = 2500;                      // Initial loading gif duration
 const PHENOMENA = [9, 27, 40, 43, 53, 58, 65, 81];  // Keep track of phenomena image indices
-const SPATIAL_MERGING = 6;                          // Keep track of Spatial Merging image index
+const INTERPLANAR_TUNNEL = 27;                      // Interplanar Tunnel image index
+const SPATIAL_MERGING = 65;                         // Spatial Merging image index
 const COUNTER_PLANES = [3, 33, 41, 44]              // Planes that need counters
 const CHAOS_PLANES = [54, 66]                       // Planes that have chaos abilities that need to be handled
 const COIN_PLANES = [39]                            // Planes that need coin flips
 const REVEALED_PLANES = []                          // Keep track of currently revealed planes
+const CURR_PHENOM = [];                             // Keep track of Spatial Merging or Interplanar Tunnel
+const SPATIAL_PLANES = [];                          // Keep track of Spatial Merging planes
+const INTERPLANAR_PLANES = [];                      // Keep track of Interplanar Tunnel planes
 
 
 var deck = [];        
@@ -446,11 +450,14 @@ function dealCards() {
     }, LOADING_DURATION);
 }
 
+
+var a = true;
 /*
  * Simulates drawing a card from the planar deck
  * Handles encountering phenomena
  */
 function drawCard(removePhenomena) {
+
     if (removePhenomena) {
         var fullBackground = document.querySelector(".full-background");
         var focusPlane = document.querySelector(".focusPlane");
@@ -474,7 +481,6 @@ function drawCard(removePhenomena) {
 
     // Render board when no more cards to draw
     if (emptyCells.length == 0) {
-
         renderBoard();
         return;
     }
@@ -483,8 +489,10 @@ function drawCard(removePhenomena) {
     var card = deck.shift();
 
     // If phenomena, handle that 
-    if (PHENOMENA.includes(card)) {
-        if (showPhenomenon) {
+    // if (PHENOMENA.includes(card)) {
+    if (a) {
+        a = false;
+        if (removePhenomena) {
             setTimeout(function() {
                 showPhenomenon(card);
             }, TRANSITION_DURATION)
@@ -509,11 +517,18 @@ function drawCard(removePhenomena) {
  */ 
 function showPhenomenon(card) {
 
-    // var background = document.querySelector(".focusPlaneBackground");
     var focusPlane = document.querySelector(".focusPlane");
     var okButton = document.querySelector(".okButton");
     var loadingGif = document.querySelector(".loading-gif");
     var fullBackground = document.querySelector(".full-background");
+
+    // Interplanar tunnel and Spatial Merging, use reveal button
+    // if (CURR_PHENOM.length > 0 || card == INTERPLANAR_TUNNEL || card == SPATIAL_MERGING) {
+    if (true) {
+        // CURR_PHENOM.push(card);
+        CURR_PHENOM.push(SPATIAL_MERGING);
+        okButton = document.querySelector(".revealOKButton");
+    }
 
     // background.style.display = "inline";
     fullBackground.style.display = "inline";
@@ -524,7 +539,7 @@ function showPhenomenon(card) {
     var imageName = "assets/planes/" + card + ".png";
     focusPlane.getElementsByTagName("img")[0].src = imageName; 
 
-    // Animate fadeIns of clickable background, phenomenon image, and OK button
+    // Animate fadeIns of background, phenomenon image, and OK button
     fullBackground.classList.remove("animate-fadeOut");
     fullBackground.classList.add("animate-fadeIn");
 
@@ -539,6 +554,58 @@ function showPhenomenon(card) {
 
     setTimeout(function() {
         loadingGif.style.display = "none";
+    }, TRANSITION_DURATION)
+}
+
+
+/*
+ * Reveal cards until the target number of planes are hit (Spatial Merging = 2, Interplanar Tunnel = 5)
+ */
+function revealCard() {
+
+    var focusPlane = document.querySelector(".focusPlane");
+    focusPlane.classList.remove("animate-fadeIn");
+    focusPlane.classList.add("animate-fadeOut");
+
+    // Wait till plane has faded to fade back in
+    setTimeout(function() {
+
+        // Interplanar tunnel finished
+        if (CURR_PHENOM[CURR_PHENOM.length - 1] == INTERPLANAR_TUNNEL && INTERPLANAR_PLANES.length == 5) {
+            CURR_PHENOM.pop();
+            displayInterplanarTunnel();
+            return;
+        }
+
+        // Spatial Merging finished
+        if (CURR_PHENOM[CURR_PHENOM.length - 1] == SPATIAL_MERGING && SPATIAL_PLANES.length == 2) {
+            CURR_PHENOM.pop();
+            displaySpatialMerging();
+            return;
+        }
+
+        // Reveal next card
+        var card = deck.shift();
+
+        // If phenomena, handle that 
+        if (PHENOMENA.includes(card)) {
+            showPhenomenon(card);
+
+        // Regular plane, add to revealed planes and recurse if needed
+        } else {
+
+            if (CURR_PHENOM[CURR_PHENOM.length - 1] == INTERPLANAR_TUNNEL) {
+                INTERPLANAR_PLANES.push(card);
+            } else if (CURR_PHENOM[CURR_PHENOM.length - 1] == SPATIAL_MERGING) {
+                SPATIAL_PLANES.push(card);
+            }
+
+            // Set image for focus
+            var imageName = "assets/planes/" + card + ".png";
+            focusPlane.getElementsByTagName("img")[0].src = imageName; 
+            focusPlane.classList.remove("animate-fadeOut");
+            focusPlane.classList.add("animate-fadeIn");
+        } 
     }, TRANSITION_DURATION)
 }
 
@@ -661,6 +728,86 @@ function chaosRolled() {
         displayStairsToInfinity();
     }
 }
+
+
+/*
+ * Shows the five planes that you can choose from for Interplanar Tunnel
+ */
+function displayInterplanarTunnel() {
+
+    var interplanarDisplay = document.querySelector(".interplanar-planes");
+    var planes = interplanarDisplay.getElementsByTagName("img");
+
+    // Set images
+    var imgPrefix = "assets/planes/";
+    var imgSuffix = ".png";
+    for (var i = 0; i < INTERPLANAR_PLANES.length; i++) {
+        planes[i].src = imgPrefix + INTERPLANAR_PLANES[i] + imgSuffix;
+    }
+
+    // Fade in view
+    interplanarDisplay.style.display = "flex";
+    interplanarDisplay.classList.remove("animate-fadeOut");
+    interplanarDisplay.classList.add("animate-fadeIn");
+}
+
+
+/*
+ * Simulates moving to the chosen plane from Interplanar Tunnel, and updates display
+ */
+function moveToInterplanarTunnel(index) {
+
+    // Set the chosen plane to where we're going
+    grid[1][1] = INTERPLANAR_PLANES[index];
+
+    var interplanarDisplay = document.querySelector(".interplanar-planes"); 
+    interplanarDisplay.classList.remove("animate-fadeIn");
+    interplanarDisplay.classList.add("animate-fadeOut");
+
+    var fullBackground = document.querySelector(".full-background");
+    fullBackground.classList.remove("animate-fadeIn");
+    fullBackground.classList.add("animate-fadeOut");
+
+    var okButton = document.querySelector(".revealOKButton");
+    okButton.classList.remove("animate-fadeIn");
+    okButton.classList.add("animate-fadeOut");
+
+    // Wait till interplanar displays are removed
+    setTimeout(function() {
+
+        interplanarDisplay.style.display = "none";
+        fullBackground.style.display = "none";
+        okButton.style.display = "none";
+
+        // Get new cards from deck
+        emptyCells = [];
+        if (grid[0][1] == -1){
+            emptyCells.push([0, 1]);
+        }
+        if (grid[1][0] == -1){
+            emptyCells.push([1, 0]);
+        }
+        if (grid[1][2] == -1){
+            emptyCells.push([1, 2]);
+        }
+        if (grid[2][1] == -1){
+            emptyCells.push([2, 1]);
+        }
+
+        drawCard(false);
+
+    }, TRANSITION_DURATION);
+}
+
+
+function displaySpatialMerging() {
+
+    console.log("spatial merging, planes = ");
+    console.log(SPATIAL_PLANES);
+}
+
+
+
 
 
 /*
