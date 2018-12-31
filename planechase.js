@@ -18,11 +18,12 @@ const SPATIAL_MERGING = 65;                         // Spatial Merging image ind
 const COUNTER_PLANES = [3, 33, 41, 44]              // Planes that need counters
 const CHAOS_PLANES = [54, 66]                       // Planes that have chaos abilities that need to be handled
 const COIN_PLANES = [39]                            // Planes that need coin flips
-const REVEALED_PLANES = []                          // Keep track of currently revealed planes
-const CURR_PHENOM = [];                             // Keep track of Spatial Merging or Interplanar Tunnel
-const SPATIAL_PLANES = [];                          // Keep track of Spatial Merging planes
-const INTERPLANAR_PLANES = [];                      // Keep track of Interplanar Tunnel planes
 
+var REVEALED_PLANES = []       // Keep track of currently revealed planes
+var CURR_PHENOM = [];          // Keep track of Spatial Merging or Interplanar Tunnel
+var INTERPLANAR_PLANES = [];   // Keep track of Interplanar Tunnel planes
+var SPATIAL_PLANES = [];       // Keep track of Spatial Merging planes
+var MERGED_PLANES = [];        // To display with focus plane
 
 var deck = [];        
 var grid = [            // Current plane will be index 4 of the grid, always recenter
@@ -148,37 +149,49 @@ function focusPlane(indices) {
     var focusPlane = document.querySelector(".focusPlane");
     var planeswalkButton = document.querySelector(".planeswalkButton");
 
-    background.style.display = "inline";
-    focusPlane.style.display = "flex"; 
+    var imgPrefix = "assets/planes/";
+    var imgSuffix = ".png";
 
-    // Don't give planeswalk option if looking at current plane, or if diagonal plane and face-up
-    if (!(row == 1 && col == 1) && !(grid[row][col] != -1 && isDiagonal(indices))) {
-        planeswalkButton.style.display = "flex";
-    }
+    // Spatial merging 
+    if (grid[row][col] == SPATIAL_MERGING) {
+        focusPlane.style.display = "none";  // remove regular focus plane
+        focusPlane = document.querySelector(".merged-focusPlane");
+        planeswalkButton = document.querySelector(".merged-planeswalkButton");
 
-    // Set image for focus
-    var imageName;
-    // Plane is face-up 
-    if (grid[row][col] != -1) {
-        imageName = "assets/planes/" + grid[row][col] + ".png";
-    // Plane is face-down
+        var mergedImgs = document.querySelector(".merged-planes").getElementsByTagName("img");
+        mergedImgs[0].src = imgPrefix + MERGED_PLANES[0] + imgSuffix;
+        mergedImgs[1].src = imgPrefix + MERGED_PLANES[1] + imgSuffix; 
+
+    // Regular focus plane
     } else {
-        imageName = "assets/planes/back.png";
+        // Set image for focus
+        var imgName;
+        // Plane is face-up 
+        if (grid[row][col] != -1) {
+            imgName = imgPrefix + grid[row][col] + imgSuffix;
+        // Plane is face-down
+        } else {
+           imgName = imgPrefix + "back" + imgSuffix;
+        }
+
+        document.querySelector(".focusPlaneImage").src = imgName;
     }
-    focusPlane.getElementsByTagName("img")[0].src = imageName; 
 
     // Handle displays for unique planes (counters, etc)
     displayUniquePlanes(indices);
 
     // Animate fadeIns of clickable background, plane image, and planeswalk button
+    background.style.display = "inline";
     background.classList.remove("animate-fadeOut");
     background.classList.add("animate-fadeIn");
 
+    focusPlane.style.display = "flex";
     focusPlane.classList.remove("animate-fadeOut");
     focusPlane.classList.add("animate-fadeIn");
 
     // Don't give planeswalk option if looking at current plane
     if(!(row == 1 && col == 1) && !(grid[row][col] != -1 && isDiagonal(indices))) {
+        planeswalkButton.style.display = "flex";
         planeswalkButton.classList.remove("animate-fadeOut");
         planeswalkButton.classList.add("animate-fadeIn"); 
     }
@@ -193,6 +206,12 @@ function removeFocusPlane() {
     var focusPlane = document.querySelector(".focusPlane");
     var planeswalkButton = document.querySelector(".planeswalkButton");
     var uniquePlanes = document.querySelectorAll(".uniqueplane");
+
+    // Handle removing Spatial Merging merged planes
+    if (grid[currFocus[0]][currFocus[1]] == SPATIAL_MERGING) {
+        focusPlane = document.querySelector(".merged-focusPlane");
+        planeswalkButton = document.querySelector(".merged-planeswalkButton");
+    }
     
     // Animates fadeOuts of clickable background, plane image, and planeswalk button
     background.classList.remove("animate-fadeIn");
@@ -640,6 +659,7 @@ function updateLifeTotal(playerID, amount) {
     })
 }
 
+
 /*
  * Updates the counter display within focus plane to add a counter 
  */
@@ -754,11 +774,14 @@ function displayInterplanarTunnel() {
 
 /*
  * Simulates moving to the chosen plane from Interplanar Tunnel, and updates display
+ * Triggered by clicking on one of the planes presented from displayInterplanarTunnel()
  */
 function moveToInterplanarTunnel(index) {
 
     // Set the chosen plane to where we're going
     grid[1][1] = INTERPLANAR_PLANES[index];
+    INTERPLANAR_PLANES = [];
+
 
     var interplanarDisplay = document.querySelector(".interplanar-planes"); 
     interplanarDisplay.classList.remove("animate-fadeIn");
@@ -800,14 +823,78 @@ function moveToInterplanarTunnel(index) {
 }
 
 
+/*
+ * Shows the two planes that will be merged for Spatial Merging
+ */
 function displaySpatialMerging() {
 
-    console.log("spatial merging, planes = ");
-    console.log(SPATIAL_PLANES);
+    var spatialDisplay = document.querySelector(".spatial-merging");
+    var planes = spatialDisplay.getElementsByTagName("img");
+    MERGED_PLANES = [];
+
+    // Set images
+    var imgPrefix = "assets/planes/";
+    var imgSuffix = ".png";
+    for (var i = 0; i < SPATIAL_PLANES.length; i++) {
+        planes[i].src = imgPrefix + SPATIAL_PLANES[i] + imgSuffix;
+        MERGED_PLANES.push(SPATIAL_PLANES[i]);
+    }
+
+    // Fade in view
+    spatialDisplay.style.display = "flex";
+    spatialDisplay.classList.remove("animate-fadeOut");
+    spatialDisplay.classList.add("animate-fadeIn");
 }
 
 
+/*
+ * Simulates moving to the 2 planes from Spatial Merging
+ * Spatial Merging image will be displayed in the grid, but when you click on it the 2 planes will be viewed
+ * Triggered by clicking the "merge" button presented from displaySpatialMerging()
+ */
+function moveToSpatialMerging() {
 
+    // Set Spatial Merging to the center plane
+    grid[1][1] = SPATIAL_MERGING;
+
+    // Fade out display
+    var spatialDisplay = document.querySelector(".spatial-merging");
+    spatialDisplay.classList.remove("animate-fadeIn");
+    spatialDisplay.classList.add("animate-fadeOut");
+
+    var fullBackground = document.querySelector(".full-background");
+    fullBackground.classList.remove("animate-fadeIn");
+    fullBackground.classList.add("animate-fadeOut");
+
+    var okButton = document.querySelector(".revealOKButton");
+    okButton.classList.remove("animate-fadeIn");
+    okButton.classList.add("animate-fadeOut");
+
+    setTimeout(function() {
+
+        spatialDisplay.style.display = "none";
+        fullBackground.style.display = "none";
+        okButton.style.display = "none";
+
+        // Get new cards from deck
+        emptyCells = [];
+        if (grid[0][1] == -1){
+            emptyCells.push([0, 1]);
+        }
+        if (grid[1][0] == -1){
+            emptyCells.push([1, 0]);
+        }
+        if (grid[1][2] == -1){
+            emptyCells.push([1, 2]);
+        }
+        if (grid[2][1] == -1){
+            emptyCells.push([2, 1]);
+        }
+
+        drawCard(false);
+
+    }, TRANSITION_DURATION);
+}
 
 
 /*

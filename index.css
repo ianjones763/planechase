@@ -16,6 +16,7 @@ html, body {
 .cell:hover,
 .focusPlaneBackground:hover,
 .planeswalkButton:hover,
+.merged-planeswalkButton:hover,
 .okButton:hover, .revealOKButton:hover,
 .chaos-container:hover,
 .minus:hover, .plus:hover,
@@ -279,7 +280,6 @@ html, body {
     border-radius: 5px;
 }
 
-
 .focusPlane {
     position: absolute;
     width: 65%;
@@ -295,6 +295,24 @@ html, body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+}
+
+.merged-focusPlane {
+    position: absolute;
+    width: 80%;
+    height: 50%;
+    margin: auto auto;
+    left: 0;
+    right: 0;
+    top: 90px;
+    bottom: 0;
+
+    opacity: 1;
+    display: flex;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center; 
 }
 
 .focusPlaneImage, .uniqueFocusPlaneImage {
@@ -361,7 +379,7 @@ html, body {
     display: none;  
 }
 
-.planeswalkButton {
+.planeswalkButton, .merged-planeswalkButton {
     margin-top: 20px;
     display: flex;
     justify-content: center;
@@ -370,7 +388,11 @@ html, body {
     display: none;  
 }
 
-.planeswalkButton img {
+.merged-planeswalkButton {
+    margin-top: 90px;
+}
+
+.planeswalkButton img, .merged-planeswalkButton {
     width: 100%;
     height: auto;
 }
@@ -548,6 +570,26 @@ html, body {
     flex-direction: row;
     align-items: center;
     justify-content: center;
+}
+
+.merged-planes {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.merged-plane {
+    height: 100%;
+    width: 50%;
+    margin: 0 30px;
+    display: flex;
+    justify-content: center;
+}
+
+.merged-plane img {
+    height: 100%;
+    width: auto;
 }
 
 .spatial-plane {

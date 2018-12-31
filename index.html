@@ -286,6 +286,7 @@
     <div class="focusPlaneBackground" onclick="removeFocusPlane()"></div>
 
     <div class="focusPlane">
+        <!-- Regular focus plane -->
         <img class="focusPlaneImage" src="">
 
         <!-- Planeswalk -->
@@ -357,6 +358,26 @@
             <div id="coinflip-result">
                 <img src="assets/game/coin-blank.svg">
             </div>
+        </div>
+    </div>
+
+
+    <!-- Merged planes from Spatial Merging -->
+    <div class="merged-focusPlane">
+        <div class="merged-planes">
+            <div class="merged-plane">
+                <img src="assets/planes/0.png">
+            </div>
+            <div class="merged-plane">
+                <img src="assets/planes/0.png">
+            </div>
+        </div> 
+        <div class="merged-planeswalkButton" onmouseover="on_mouseover(this)"
+                                             onclick="moveToPlane()"
+                                             onmouseout="on_mouseout(this)"
+                                             onmousedown="on_mousedown(this)"
+                                             onmouseup="on_mouseup(this)">
+            <img src="assets/game/planeswalklabel.svg">
         </div>
     </div>
 
@@ -451,11 +472,14 @@
                 <img src="assets/planes/0.png">
             </div>
         </div>
-        <div class="merge-button">
+        <div class="merge-button" onmouseover="on_mouseover(this)"
+                                  onclick="moveToSpatialMerging()"
+                                  onmouseout="on_mouseout(this)"
+                                  onmousedown="on_mousedown(this)"
+                                  onmouseup="on_mouseup(this)">
             <img src="assets/game/merge.svg">
         </div>
     </div>
-
 
 
     <!-- Main menu -->
