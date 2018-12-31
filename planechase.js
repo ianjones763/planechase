@@ -136,7 +136,6 @@ function displayUniquePlanes(indices) {
     }
 }
 
-
 /*
  * Shows close-up view of the given plane
  */
@@ -158,9 +157,11 @@ function focusPlane(indices) {
         focusPlane = document.querySelector(".merged-focusPlane");
         planeswalkButton = document.querySelector(".merged-planeswalkButton");
 
-        var mergedImgs = document.querySelector(".merged-planes").getElementsByTagName("img");
+        var mergedImgs = document.querySelectorAll(".spatial-img");
         mergedImgs[0].src = imgPrefix + MERGED_PLANES[0] + imgSuffix;
         mergedImgs[1].src = imgPrefix + MERGED_PLANES[1] + imgSuffix; 
+
+        spatialDisplayUniquePlanes(indices);
 
     // Regular focus plane
     } else {
@@ -175,10 +176,10 @@ function focusPlane(indices) {
         }
 
         document.querySelector(".focusPlaneImage").src = imgName;
-    }
 
-    // Handle displays for unique planes (counters, etc)
-    displayUniquePlanes(indices);
+        // Handle displays for unique planes (counters, etc)
+        displayUniquePlanes(indices);
+    }
 
     // Animate fadeIns of clickable background, plane image, and planeswalk button
     background.style.display = "inline";
@@ -474,7 +475,7 @@ function dealCards() {
 }
 
 
-// var a = true;
+var a = true;
 /*
  * Simulates drawing a card from the planar deck
  * Handles encountering phenomena
@@ -512,9 +513,9 @@ function drawCard(removePhenomena) {
     var card = deck.shift();
 
     // If phenomena, handle that 
-    if (PHENOMENA.includes(card)) {
-    // if (a) {
-        // a = false;
+    // if (PHENOMENA.includes(card)) {
+    if (a) {
+        a = false;
         if (removePhenomena) {
             setTimeout(function() {
                 showPhenomenon(card);
@@ -546,14 +547,13 @@ function showPhenomenon(card) {
     var fullBackground = document.querySelector(".full-background");
 
     // Interplanar tunnel and Spatial Merging, use reveal button
-    if (CURR_PHENOM.length > 0 || card == INTERPLANAR_TUNNEL || card == SPATIAL_MERGING) {
-    // if (true) {
+    // if (CURR_PHENOM.length > 0 || card == INTERPLANAR_TUNNEL || card == SPATIAL_MERGING) {
+    if (true) {
         CURR_PHENOM.push(card);
-        // CURR_PHENOM.push(SPATIAL_MERGING);
+        CURR_PHENOM.push(SPATIAL_MERGING);
         okButton = document.querySelector(".revealOKButton");
     }
 
-    // background.style.display = "inline";
     fullBackground.style.display = "inline";
     focusPlane.style.display = "flex"; 
     okButton.style.display = "flex";
@@ -667,8 +667,8 @@ function updateLifeTotal(playerID, amount) {
 /*
  * Updates the counter display within focus plane to add a counter 
  */
-function addCounter() {
-    var counterDiv = document.getElementById("curr-plane-counter");
+function addCounter(id) {
+    var counterDiv = document.getElementById(id);
     var currCounters = parseInt(counterDiv.innerHTML, 10);
     currCounters += 1;
 
@@ -708,9 +708,9 @@ function rollDie() {
 /*
  * Simulates a coin flip and updates focus div to display the result
  */
-function flipCoin() {
+function flipCoin(id) {
     var rand = Math.floor(Math.random() * 2) + 1;     // generate random die roll between 1 and 2
-    var coinDiv = document.getElementById("coinflip-result").getElementsByTagName("img")[0];
+    var coinDiv = document.getElementById(id).getElementsByTagName("img")[0];
     
     // Animate change
     coinDiv.style.opacity = 0;
@@ -850,6 +850,67 @@ function displaySpatialMerging() {
     spatialDisplay.style.display = "flex";
     spatialDisplay.classList.remove("animate-fadeOut");
     spatialDisplay.classList.add("animate-fadeIn");
+}
+
+
+function spatialDisplayUniquePlanes(indices) {
+
+    var row = indices[0],
+        col = indices[1];
+
+    // Only matters if we're on the spatial merging plane
+    if (row == 1 && col == 1) {
+        var i = 0;
+        // Check both planes for uniqueness
+        MERGED_PLANES.forEach(function(card) {
+            // Plane needs to display counter
+            // if (COUNTER_PLANES.includes(card)) {
+            if (true) {
+
+                var counterContainer = document.querySelectorAll(".spatial-counter-container")[i];
+                counterContainer.style.display = "flex";
+        
+                var counterImg = document.querySelectorAll(".spatial-counter-img")[i].getElementsByTagName("img")[0];
+                // Aretopolis --> scroll counters
+                // if (card == 3) {
+                if (true) {
+                    counterImg = "assets/game/scroll-counter.svg";
+                }
+                // Kilnspire District --> charge counter
+                else if (card == 33) {
+                    counterImg.src = "assets/game/charge-counter.svg"; 
+                }
+                // Mount Keralia --> pressure counter
+                else if (card == 41) {
+                    counterImg.src = "assets/game/pressure-counter.svg"; 
+                }
+                // Naar Isle --> flame counter
+                else if (card == 44) {
+                    counterImg.src = "assets/game/flame-counter.svg"; 
+                }
+
+                counterContainer.classList.remove("animate-fadeOut");
+                counterContainer.classList.add("animate-fadeIn");
+            }
+
+            // Plane has unique chaos trigger
+            else if (CHAOS_PLANES.includes(card)) {
+                var chaosContainer = document.querySelectorAll(".spatial-chaos-container")[i];
+                chaosContainer.style.display = "flex";
+                chaosContainer.classList.remove("animate-fadeOut");
+                chaosContainer.classList.add("animate-fadeIn"); 
+            }
+
+            // Plane has coin flip 
+            else if (COIN_PLANES.includes(card)) {
+                var coinflipContainer = document.querySelectorAll(".spatial-coinflip-container")[i];
+                coinflipContainer.style.display = "flex";
+                coinflipContainer.classList.remove("animate-fadeOut");
+                coinflipContainer.classList.add("animate-fadeIn"); 
+            }
+            i++;
+        });
+    }
 }
 
 

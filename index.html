@@ -328,7 +328,7 @@
                 </div>
             </div>
             <div class="plus-img" onmouseover="on_mouseover(this)"
-                                  onclick="addCounter()"
+                                  onclick="addCounter('curr-plane-counter')"
                                   onmouseout="on_mouseout(this)"
                                   onmousedown="on_mousedown(this)"
                                   onmouseup="on_mouseup(this)">
@@ -348,7 +348,7 @@
         <!-- Coin flip -->
         <div class="coinflip-container uniqueplane">
             <div class="coinflip-prompt" onmouseover="on_mouseover(this)"
-                                         onclick="flipCoin()"
+                                         onclick="flipCoin('coinflip-result')"
                                          onmouseout="on_mouseout(this)"
                                          onmousedown="on_mousedown(this)"
                                          onmouseup="on_mouseup(this)">
@@ -365,11 +365,103 @@
     <!-- Merged planes from Spatial Merging -->
     <div class="merged-focusPlane">
         <div class="merged-planes">
+
+            <!-- 1st plane -->
             <div class="merged-plane">
-                <img src="assets/planes/0.png">
+                <img class="spatial-img" src="assets/planes/0.png">
+                
+                <!-- Counters -->
+                <div class="spatial-counter-container uniqueplane">
+                    <div class="spatial-counter-img">
+                        <img src="assets/game/scroll-counter.svg">
+                    </div>
+
+                    <div class="counter-number">
+                        <div id="spatial-plane-counter-0">
+                            0
+                        </div>
+                    </div>
+                    <div class="plus-img" onmouseover="on_mouseover(this)"
+                                          onclick="addCounter('spatial-plane-counter-0')"
+                                          onmouseout="on_mouseout(this)"
+                                          onmousedown="on_mousedown(this)"
+                                          onmouseup="on_mouseup(this)">
+                        <img src="assets/game/plus.svg">
+                    </div>
+                </div>
+
+                <!-- Chaos -->
+                <div class="spatial-chaos-container uniqueplane" onmouseover="on_mouseover(this)"
+                                                         onclick="chaosRolled()"
+                                                         onmouseout="on_mouseout(this)"
+                                                         onmousedown="on_mousedown(this)"
+                                                         onmouseup="on_mouseup(this)">
+                    <img src="assets/game/chaos.svg">
+                </div>
+
+                <!-- Coin flip -->
+                <div class="spatial-coinflip-container uniqueplane">
+                    <div class="coinflip-prompt" onmouseover="on_mouseover(this)"
+                                                 onclick="flipCoin('spatial-coinflip-result-0')"
+                                                 onmouseout="on_mouseout(this)"
+                                                 onmousedown="on_mousedown(this)"
+                                                 onmouseup="on_mouseup(this)">
+                        <img src="assets/game/coin-prompt.svg">
+                    </div>
+
+                    <div id="spatial-coinflip-result-0">
+                        <img src="assets/game/coin-blank.svg">
+                    </div>
+                </div>
             </div>
+
+            <!-- 2nd plane -->
             <div class="merged-plane">
-                <img src="assets/planes/0.png">
+                <img class="spatial-img" src="assets/planes/0.png">
+
+                <!-- Counters -->
+                <div class="spatial-counter-container uniqueplane">
+                    <div class="spatial-counter-img">
+                        <img src="assets/game/scroll-counter.svg">
+                    </div>
+
+                    <div class="counter-number">
+                        <div id="spatial-plane-counter-1">
+                            0
+                        </div>
+                    </div>
+                    <div class="plus-img" onmouseover="on_mouseover(this)"
+                                         onclick="addCounter('spatial-plane-counter-1')"
+                                         onmouseout="on_mouseout(this)"
+                                         onmousedown="on_mousedown(this)"
+                                         onmouseup="on_mouseup(this)">
+                        <img src="assets/game/plus.svg">
+                    </div>
+                </div>
+
+                <!-- Chaos -->
+                <div class="spatial-chaos-container uniqueplane" onmouseover="on_mouseover(this)"
+                                                         onclick="chaosRolled()"
+                                                         onmouseout="on_mouseout(this)"
+                                                         onmousedown="on_mousedown(this)"
+                                                         onmouseup="on_mouseup(this)">
+                    <img src="assets/game/chaos.svg">
+                </div>
+
+                <!-- Coin flip -->
+                <div class="spatial-coinflip-container uniqueplane">
+                    <div class="coinflip-prompt" onmouseover="on_mouseover(this)"
+                                                 onclick="flipCoin('spatial-coinflip-result-1')"
+                                                 onmouseout="on_mouseout(this)"
+                                                 onmousedown="on_mousedown(this)"
+                                                 onmouseup="on_mouseup(this)">
+                        <img src="assets/game/coin-prompt.svg">
+                    </div>
+
+                    <div id="spatial-coinflip-result-1">
+                        <img src="assets/game/coin-blank.svg">
+                    </div>
+                </div>
             </div>
         </div> 
         <div class="merged-planeswalkButton" onmouseover="on_mouseover(this)"
