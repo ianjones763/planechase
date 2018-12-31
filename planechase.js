@@ -276,6 +276,11 @@ function moveToPlane() {
 
                     temp[i][j] = grid[i - rowShift][j - colShift];
                 }
+
+                // Re-add cards to deck that are now out of bounds
+                if (!(Math.abs(i - currFocus[0]) <= 1 && Math.abs(j - currFocus[1]) <= 1)) {
+                    if (grid[i][j] != -1) deck.push(grid[i][j])
+                }
             }
         }
 
@@ -298,7 +303,6 @@ function moveToPlane() {
         if (temp[2][1] == -1){
             emptyCells.push([2, 1]);
         }
-
         drawCard(false);
   
     }, TRANSITION_DURATION);
@@ -470,7 +474,7 @@ function dealCards() {
 }
 
 
-var a = true;
+// var a = true;
 /*
  * Simulates drawing a card from the planar deck
  * Handles encountering phenomena
@@ -508,9 +512,9 @@ function drawCard(removePhenomena) {
     var card = deck.shift();
 
     // If phenomena, handle that 
-    // if (PHENOMENA.includes(card)) {
-    if (a) {
-        a = false;
+    if (PHENOMENA.includes(card)) {
+    // if (a) {
+        // a = false;
         if (removePhenomena) {
             setTimeout(function() {
                 showPhenomenon(card);
@@ -542,10 +546,10 @@ function showPhenomenon(card) {
     var fullBackground = document.querySelector(".full-background");
 
     // Interplanar tunnel and Spatial Merging, use reveal button
-    // if (CURR_PHENOM.length > 0 || card == INTERPLANAR_TUNNEL || card == SPATIAL_MERGING) {
-    if (true) {
-        // CURR_PHENOM.push(card);
-        CURR_PHENOM.push(SPATIAL_MERGING);
+    if (CURR_PHENOM.length > 0 || card == INTERPLANAR_TUNNEL || card == SPATIAL_MERGING) {
+    // if (true) {
+        CURR_PHENOM.push(card);
+        // CURR_PHENOM.push(SPATIAL_MERGING);
         okButton = document.querySelector(".revealOKButton");
     }
 
@@ -763,6 +767,7 @@ function displayInterplanarTunnel() {
     var imgSuffix = ".png";
     for (var i = 0; i < INTERPLANAR_PLANES.length; i++) {
         planes[i].src = imgPrefix + INTERPLANAR_PLANES[i] + imgSuffix;
+        deck.push(INTERPLANAR_PLANES[i]);
     }
 
     // Fade in view
@@ -838,6 +843,7 @@ function displaySpatialMerging() {
     for (var i = 0; i < SPATIAL_PLANES.length; i++) {
         planes[i].src = imgPrefix + SPATIAL_PLANES[i] + imgSuffix;
         MERGED_PLANES.push(SPATIAL_PLANES[i]);
+        deck.push(SPATIAL_PLANES[i]);
     }
 
     // Fade in view
@@ -1093,12 +1099,6 @@ function quitGame(quit) {
         fadeOutCards();
         removeMainMenu();
 
-        // Reset life totals
-        var lifeTotals = document.querySelectorAll(".life");
-        lifeTotals.forEach(function(d) {
-            d.innerHTML = 20;
-        })
-
         // Reset grid
         grid = [
             [-1, -1, -1],
@@ -1108,6 +1108,15 @@ function quitGame(quit) {
     
         setTimeout(function() {
             dealCards();
+
+            // Reset life totals
+            var lifeTotals = document.querySelectorAll(".life");
+            lifeTotals.forEach(function(d) {
+                d.innerHTML = 20;
+            })
+
+            // Reset planar die
+            document.getElementById("planardie").src = "assets/header/die.svg";
         }, TRANSITION_DURATION)
     }
 }
