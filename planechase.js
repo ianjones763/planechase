@@ -475,7 +475,6 @@ function dealCards() {
 }
 
 
-var a = true;
 /*
  * Simulates drawing a card from the planar deck
  * Handles encountering phenomena
@@ -513,9 +512,7 @@ function drawCard(removePhenomena) {
     var card = deck.shift();
 
     // If phenomena, handle that 
-    // if (PHENOMENA.includes(card)) {
-    if (a) {
-        a = false;
+    if (PHENOMENA.includes(card)) {
         if (removePhenomena) {
             setTimeout(function() {
                 showPhenomenon(card);
@@ -547,10 +544,8 @@ function showPhenomenon(card) {
     var fullBackground = document.querySelector(".full-background");
 
     // Interplanar tunnel and Spatial Merging, use reveal button
-    // if (CURR_PHENOM.length > 0 || card == INTERPLANAR_TUNNEL || card == SPATIAL_MERGING) {
-    if (true) {
+    if (CURR_PHENOM.length > 0 || card == INTERPLANAR_TUNNEL || card == SPATIAL_MERGING) {
         CURR_PHENOM.push(card);
-        CURR_PHENOM.push(SPATIAL_MERGING);
         okButton = document.querySelector(".revealOKButton");
     }
 
@@ -729,7 +724,7 @@ function flipCoin(id) {
 /*
  * Handles when chaos is rolled on certain unique planes (Pools of Becoming, Stairs to Infinity)
  */
-function chaosRolled() {
+function chaosRolled(spatialIndex) {
     chaosContainer = document.querySelector(".chaos-container");
     chaosContainer.onmouseover = null;
     chaosContainer.onmouseout = null;
@@ -750,6 +745,22 @@ function chaosRolled() {
     // Stairs to Infinity
     else if (card == 80) {
         displayStairsToInfinity();
+    }
+
+    else if (card == SPATIAL_MERGING) {
+
+        // Pools of Becoming
+        if (MERGED_PLANES[spatialIndex] == 62) {
+            REVEALED_PLANES.push(deck.shift());
+            REVEALED_PLANES.push(deck.shift());
+            REVEALED_PLANES.push(deck.shift());
+    
+            displayPoolsOfBecoming(); 
+
+        // Stairs to Infinity
+        } else if (MERGED_PLANES[spatialIndex] == 80) {
+            displayStairsToInfinity();
+        }
     }
 }
 
@@ -864,16 +875,13 @@ function spatialDisplayUniquePlanes(indices) {
         // Check both planes for uniqueness
         MERGED_PLANES.forEach(function(card) {
             // Plane needs to display counter
-            // if (COUNTER_PLANES.includes(card)) {
-            if (true) {
-
+            if (COUNTER_PLANES.includes(card)) {
                 var counterContainer = document.querySelectorAll(".spatial-counter-container")[i];
                 counterContainer.style.display = "flex";
         
                 var counterImg = document.querySelectorAll(".spatial-counter-img")[i].getElementsByTagName("img")[0];
                 // Aretopolis --> scroll counters
-                // if (card == 3) {
-                if (true) {
+                if (card == 3) {
                     counterImg = "assets/game/scroll-counter.svg";
                 }
                 // Kilnspire District --> charge counter

@@ -18,7 +18,7 @@ html, body {
 .planeswalkButton:hover,
 .merged-planeswalkButton:hover,
 .okButton:hover, .revealOKButton:hover,
-.chaos-container:hover,
+.chaos-container:hover, .spatial-chaos-container:hover,
 .minus:hover, .plus:hover,
 .top-button:hover, .bottom-button:hover,
 .poolsOfBecomingOKButton:hover,
@@ -420,6 +420,12 @@ html, body {
     display: none; 
 }
 
+.spatial-counter-container {
+    margin-top: 50px;
+}
+
+
+
 .counter-img, .plus-img, .spatial-counter-img {
     height: 65px;
 }
@@ -454,7 +460,7 @@ html, body {
     display: none;
 }
 
-.chaos-container img, .spatial-chaos-container img {
+.chaos-container img {
     height: 65px;
 }
 
@@ -467,7 +473,11 @@ html, body {
     display: none; 
 }
 
-.coinflip-prompt, #coinflip-result {
+.spatial-coinflip-container {
+    margin-top: 40px;
+}
+
+.coinflip-prompt, #coinflip-result, #spatial-coinflip-result-0, #spatial-coinflip-result-1 {
     height: 65px;
 }
 
@@ -592,6 +602,11 @@ html, body {
 .merged-plane img {
     height: 100%;
     width: auto;
+}
+
+.spatial-chaos-container img {
+    width: 65px;
+    height: 65px;
 }
 
 .spatial-plane {
