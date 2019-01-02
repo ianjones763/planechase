@@ -732,9 +732,9 @@ function chaosRolled(spatialIndex) {
     chaosContainer.setAttribute('onmouseover', "on_mouseover(this)");
     chaosContainer.setAttribute('onmouseout', "on_mouseout(this)");
     var card = grid[1][1];
-
+    
     // Pools of Becoming
-    if (card == 62) {
+    if (card == 54) {
         REVEALED_PLANES.push(deck.shift());
         REVEALED_PLANES.push(deck.shift());
         REVEALED_PLANES.push(deck.shift());
@@ -743,14 +743,14 @@ function chaosRolled(spatialIndex) {
     }
 
     // Stairs to Infinity
-    else if (card == 80) {
+    else if (card == 66) {
         displayStairsToInfinity();
     }
 
     else if (card == SPATIAL_MERGING) {
 
         // Pools of Becoming
-        if (MERGED_PLANES[spatialIndex] == 62) {
+        if (MERGED_PLANES[spatialIndex] == 54) {
             REVEALED_PLANES.push(deck.shift());
             REVEALED_PLANES.push(deck.shift());
             REVEALED_PLANES.push(deck.shift());
@@ -758,7 +758,7 @@ function chaosRolled(spatialIndex) {
             displayPoolsOfBecoming(); 
 
         // Stairs to Infinity
-        } else if (MERGED_PLANES[spatialIndex] == 80) {
+        } else if (MERGED_PLANES[spatialIndex] == 66) {
             displayStairsToInfinity();
         }
     }
